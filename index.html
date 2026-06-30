@@ -376,6 +376,15 @@ img{display:block;max-width:100%}
 .nfpa-note{display:flex;gap:10px;align-items:flex-start;background:var(--amber-soft);border:1px solid #EAD2A8;border-radius:13px;padding:12px 14px;margin-top:14px;font-size:.9rem;color:#8a5a14}
 .nfpa-note svg{width:18px;height:18px;color:var(--amber);flex:none;margin-top:2px}
 .nfpa-note b{color:#7a4f12}
+
+.nfpa-pair{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;justify-content:center;margin:6px 0 4px}
+.nfpa-col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.nfpa-col .dmini{margin:18px auto 18px}
+.nfpa-tag{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:4px 13px;border-radius:999px}
+.tag-conc{background:var(--rust-soft);color:var(--rust)}
+.tag-dil{background:var(--sage-soft);color:var(--sage)}
+.nfpa-note.green{background:var(--sage-soft);border-color:#BFE0CD;color:#2f6b50}
+.nfpa-note.green svg{color:var(--sage)}
 </style>
 </head>
 <body>
@@ -829,24 +838,56 @@ const NFPADATA = {
   peroxy:{s:2,f:0,r:1}, bonnet:{s:2,f:0,r:0}, premium_wood:{s:1,f:0,r:0},
   airlift_tropical:{s:1,f:0,r:0}, airlift_odor:{s:1,f:0,r:0}
 };
+/* Rombo NFPA del producto DILUIDO (listo para usar), de las SDS del diluido */
+const NFPADATA_DIL = {
+  profect256:{s:1,f:0,r:0}, nabc:{s:1,f:0,r:0}, peroxy:{s:1,f:0,r:0},
+  bonnet:{s:2,f:0,r:0}, tribase:{s:1,f:0,r:0}, airlift_tropical:{s:1,f:0,r:0}
+};
+const NFPA_RTU = { premium_wood:1 }; /* listos para usar, sin dilución */
+
+function nfpaDiamond(n){
+  return `<div class="dmini">
+    <div class="dq b"><span>${n.s}</span></div><div class="dq r"><span>${n.f}</span></div>
+    <div class="dq w"><span>—</span></div><div class="dq y"><span>${n.r}</span></div>
+  </div>`;
+}
+const NFPA_LEG = `<div class="nfpa-leg">
+  <div><span class="lg b"></span> Salud</div>
+  <div><span class="lg r"></span> Inflamable</div>
+  <div><span class="lg y"></span> Reactividad</div>
+  <small>0 = bajo · 4 = máximo</small>
+</div>`;
+const INFO_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+
 function nfpaMini(key){
   const n = NFPADATA[key]; if(!n) return '';
+  const d = NFPADATA_DIL[key];
+  // Caso 1: tenemos el dato del diluido -> mostramos los dos rombos
+  if(d){
+    return `<div class="fiche-sec">
+      <div class="h">Rombo NFPA: concentrado vs. diluido</div>
+      <div class="nfpa-pair">
+        <div class="nfpa-col"><div class="nfpa-tag tag-conc">Concentrado</div>${nfpaDiamond(n)}</div>
+        <div class="nfpa-col"><div class="nfpa-tag tag-dil">Diluido · listo para usar</div>${nfpaDiamond(d)}</div>
+      </div>
+      ${NFPA_LEG}
+      <div class="nfpa-note green">${INFO_SVG}
+        <span>El producto se usa <b>diluido desde el equipo</b>: ese es el riesgo real (el menor). El concentrado se muestra solo como referencia.</span>
+      </div>
+    </div>`;
+  }
+  // Caso 2: producto listo para usar (RTU), un solo rombo
+  if(NFPA_RTU[key]){
+    return `<div class="fiche-sec">
+      <div class="h">Rombo NFPA (listo para usar)</div>
+      <div class="nfpa-mini">${nfpaDiamond(n)}${NFPA_LEG}</div>
+    </div>`;
+  }
+  // Caso 3: solo tenemos el concentrado -> rombo único + nota
   return `<div class="fiche-sec">
     <div class="h">Rombo NFPA del producto</div>
-    <div class="nfpa-mini">
-      <div class="dmini">
-        <div class="dq b"><span>${n.s}</span></div><div class="dq r"><span>${n.f}</span></div>
-        <div class="dq w"><span>—</span></div><div class="dq y"><span>${n.r}</span></div>
-      </div>
-      <div class="nfpa-leg">
-        <div><span class="lg b"></span> Salud <b>${n.s}</b></div>
-        <div><span class="lg r"></span> Inflamable <b>${n.f}</b></div>
-        <div><span class="lg y"></span> Reactividad <b>${n.r}</b></div>
-        <small>0 = bajo · 4 = máximo</small>
-      </div>
-    </div>
-    <div class="nfpa-note">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <div class="nfpa-mini">${nfpaDiamond(n)}${NFPA_LEG}</div>
+    <div class="nfpa-note">${INFO_SVG}
       <span>Este rombo es del <b>producto concentrado</b>. Cuando se diluye desde el equipo, el riesgo es menor.</span>
     </div>
   </div>`;
