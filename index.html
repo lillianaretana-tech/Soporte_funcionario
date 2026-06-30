@@ -355,6 +355,27 @@ img{display:block;max-width:100%}
   border-radius:16px;
 }
 
+
+/* ---------- Rombo NFPA mini en ficha ---------- */
+.nfpa-mini{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.dmini{width:120px;height:120px;flex:none;transform:rotate(45deg);display:grid;grid-template-columns:1fr 1fr;gap:3px;margin:14px 14px 14px 22px}
+.dmini .dq{display:grid;place-items:center}
+.dmini .dq span{transform:rotate(-45deg);font-family:'Fraunces',serif;font-size:1.4rem;font-weight:700;color:#fff}
+.dmini .dq.b{background:var(--blue);border-radius:12px 0 0 0}
+.dmini .dq.r{background:var(--red);border-radius:0 12px 0 0}
+.dmini .dq.y{background:var(--yellow);border-radius:0 0 12px 0}
+.dmini .dq.y span{color:#191F2E}
+.dmini .dq.w{background:#fff;border:2px solid var(--ink);border-radius:0 0 0 12px}
+.dmini .dq.w span{color:var(--ink)}
+.nfpa-leg{display:flex;flex-direction:column;gap:6px;font-size:.92rem;font-weight:500}
+.nfpa-leg div{display:flex;align-items:center;gap:8px}
+.nfpa-leg .lg{width:14px;height:14px;border-radius:4px;display:inline-block}
+.nfpa-leg .lg.b{background:var(--blue)} .nfpa-leg .lg.r{background:var(--red)} .nfpa-leg .lg.y{background:var(--yellow)}
+.nfpa-leg small{color:var(--tx-faint);font-size:.78rem;margin-top:2px}
+
+.nfpa-note{display:flex;gap:10px;align-items:flex-start;background:var(--amber-soft);border:1px solid #EAD2A8;border-radius:13px;padding:12px 14px;margin-top:14px;font-size:.9rem;color:#8a5a14}
+.nfpa-note svg{width:18px;height:18px;color:var(--amber);flex:none;margin-top:2px}
+.nfpa-note b{color:#7a4f12}
 </style>
 </head>
 <body>
@@ -800,6 +821,37 @@ function renderProducts(){
 }
 
 /* ---- Ficha ---- */
+
+/* Rombo NFPA por producto (datos reales de cada SDS): s=salud, f=inflamable, r=reactividad */
+const NFPADATA = {
+  profect256:{s:3,f:0,r:0}, nabc:{s:3,f:0,r:0}, sparcling:{s:3,f:0,r:0},
+  sparcreme:{s:2,f:0,r:0}, tribase:{s:1,f:0,r:0}, sc200:{s:3,f:0,r:0},
+  peroxy:{s:2,f:0,r:1}, bonnet:{s:2,f:0,r:0}, premium_wood:{s:1,f:0,r:0},
+  airlift_tropical:{s:1,f:0,r:0}, airlift_odor:{s:1,f:0,r:0}
+};
+function nfpaMini(key){
+  const n = NFPADATA[key]; if(!n) return '';
+  return `<div class="fiche-sec">
+    <div class="h">Rombo NFPA del producto</div>
+    <div class="nfpa-mini">
+      <div class="dmini">
+        <div class="dq b"><span>${n.s}</span></div><div class="dq r"><span>${n.f}</span></div>
+        <div class="dq w"><span>—</span></div><div class="dq y"><span>${n.r}</span></div>
+      </div>
+      <div class="nfpa-leg">
+        <div><span class="lg b"></span> Salud <b>${n.s}</b></div>
+        <div><span class="lg r"></span> Inflamable <b>${n.f}</b></div>
+        <div><span class="lg y"></span> Reactividad <b>${n.r}</b></div>
+        <small>0 = bajo · 4 = máximo</small>
+      </div>
+    </div>
+    <div class="nfpa-note">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Este rombo es del <b>producto concentrado</b>. Cuando se diluye desde el equipo, el riesgo es menor.</span>
+    </div>
+  </div>`;
+}
+
 function openFicha(key){
   const p = CONFIG.productos.find(x=>x.key===key); if(!p) return;
   Track.event('open_product',{product:key});
@@ -822,6 +874,7 @@ function openFicha(key){
         <span class="chip">Grupo: ${SAFETY[p.key]?SAFETY[p.key].grupo:'—'}</span>
       </div>
     </div>
+    ${nfpaMini(p.key)}
     <div class="fiche-sec">
       <div class="h" style="color:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>Sirve para</div>
       <div class="chips">${p.sirve.map(s=>`<span class="chip">✓ ${s}</span>`).join('')}</div>
