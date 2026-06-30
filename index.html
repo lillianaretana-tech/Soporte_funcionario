@@ -326,6 +326,31 @@ img{display:block;max-width:100%}
 .gate-card .sub{text-align:center;color:var(--tx-soft);margin:6px 0 20px;font-size:.96rem}
 .gate-err{color:var(--rust);font-size:.86rem;font-weight:600;text-align:center;margin-top:10px;display:none}
 .gate-err.show{display:block}
+
+/* ---------- V3: real product galleries and 16-point label inspection ---------- */
+.real-gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.real-photo{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:10px;min-height:150px;display:grid;align-content:center;gap:8px}
+.real-photo img{width:100%;height:170px;object-fit:contain;border-radius:13px;background:#fff}
+.real-photo span{font-size:.76rem;color:var(--tx-soft);font-weight:700;text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.req-list{padding:14px 20px;display:grid;gap:10px}
+.req-item{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+.req-item b{display:block;color:var(--ink);font-size:.98rem}
+.req-item small{display:block;color:var(--tx-soft);font-size:.82rem;margin-top:2px}
+.req-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.req-actions button{border:1px solid var(--line);background:var(--paper-3);border-radius:999px;padding:7px 9px;font-weight:700;font-size:.76rem}
+.req-actions button.ok{background:var(--sage-soft);color:var(--sage);border-color:#b8dcc9}
+.req-actions button.no{background:var(--rust-soft);color:var(--rust);border-color:#e9c3b9}
+.req-actions button.na{background:#eee;color:var(--tx-soft)}
+.req-summary{margin:14px 20px;background:linear-gradient(135deg,var(--ink),var(--ink-2));color:var(--paper);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.req-summary h3{color:#fff;font-size:1.25rem}
+.req-summary p{color:rgba(247,244,237,.82);margin-top:4px}
+.req-summary .score{font-family:'Fraunces',serif;font-size:2rem;color:var(--brass-soft);margin-top:8px}
+.label-reference{margin:14px 20px;background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.label-reference h3{font-size:1.18rem;margin-bottom:8px}
+.label-reference p{color:var(--tx-soft);font-size:.92rem}
+.label-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 20px}
+@media(max-width:520px){.real-gallery{grid-template-columns:1fr}.real-photo img{height:210px}.req-item{grid-template-columns:1fr}.req-actions{justify-content:flex-start}.label-actions{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -665,6 +690,22 @@ const CONFIG = {
     { key:"derrame", emoji:"💧", titulo:"Derramé un químico", pasos:["Señalizá y mantené a la gente lejos.","Ventilá el área.","Avisá al supervisor antes de limpiar."] }
   ]
 };
+
+
+/* V3 — Galerías reales e inspección de etiqueta por 16 requisitos */
+const PRODUCT_PHOTOS = {"profect256": ["images/products/107402_Profect_256_Super_HDQ.jpg"], "nabc": ["images/products/nabc.jpg"], "sparcling": ["images/products/711803_SparCling.jpg", "images/products/732003_SparCreme.jpg"], "sparcreme": [], "tribase": ["images/products/483002_COG_TriBase_17.jpg"], "sc200": ["images/products/220004_SC-200.jpg"], "peroxy": ["images/products/482002_COG_Clean_by_Peroxy_15.jpg", "images/products/308504_Bonnet_and_Traffic_Lane_Carpet_Cleaner.jpg"], "bonnet": [], "airlift_tropical": ["images/products/air_lift_tropical.jpg"], "airlift_odor": ["images/products/air_lift_odor.jpg"], "premium_wood": ["images/products/PREMIUM_WOOD_POLISH.jpg"]};
+const UNASSIGNED_PRODUCT_PHOTOS = [];
+const LABEL_REQUIREMENTS_16 = [{"id": "6.1", "title": "Nombre comercial del producto", "help": "Debe verse claramente el nombre del químico."}, {"id": "6.2", "title": "Número de registro o inscripción sanitaria", "help": "Debe incluir el registro sanitario cuando aplique."}, {"id": "6.3", "title": "Tipo de producto", "help": "Indica si es desinfectante, limpiador, pulidor, etc."}, {"id": "6.4", "title": "Nombre y país del titular", "help": "Quién es responsable del producto y de qué país."}, {"id": "6.5", "title": "Nombre del importador", "help": "Quién lo importa o distribuye localmente."}, {"id": "6.6", "title": "Ingredientes peligrosos", "help": "Ingredientes peligrosos por nombre químico y porcentaje, según SDS."}, {"id": "6.7", "title": "Contenido neto", "help": "Cantidad del producto expresada en sistema internacional."}, {"id": "6.8", "title": "Instrucciones de uso", "help": "Para qué se usa y cómo debe utilizarse."}, {"id": "6.9", "title": "Advertencias y precauciones", "help": "Cuidados para personas, animales y ambiente."}, {"id": "6.10", "title": "Riesgos para la salud", "help": "Riesgos según la hoja de seguridad."}, {"id": "6.11", "title": "Procedimientos de primeros auxilios", "help": "Qué hacer por ingestión, inhalación o contacto con piel/ojos."}, {"id": "6.12", "title": "Antídotos o indicaciones médicas", "help": "Información médica si aplica."}, {"id": "6.13", "title": "Mantener fuera del alcance de niños", "help": "Esta advertencia debe aparecer."}, {"id": "6.14", "title": "Teléfono de atención de intoxicaciones", "help": "Número de emergencia del país donde se comercializa."}, {"id": "6.15", "title": "Pictogramas / simbología de peligro", "help": "Debe usar pictogramas y colores según clasificación aplicable."}, {"id": "6.16", "title": "Número de lote", "help": "Permite rastrear el producto."}, {"id": "Extra", "title": "Etiqueta legible, adherida y en español", "help": "El envase debe estar identificado, legible y con etiqueta adherida o impresa."}];
+
+function applyRealPhotosToConfig(){
+  if(!CONFIG || !CONFIG.productos) return;
+  CONFIG.productos.forEach(p => {
+    const gallery = PRODUCT_PHOTOS[p.key] || [];
+    p.gallery = gallery;
+    if(gallery.length) p.img = gallery[0];
+  });
+}
+applyRealPhotosToConfig();
 
 /* ============================================================
    CAPA DE EVENTOS — preparada para LillyTech Core (Supabase).
@@ -1091,6 +1132,173 @@ function enterApp(){
   const u=glsUser();
   if(u && u.nombre){ document.getElementById('gate').classList.add('hide'); Track.event('app_open',{}); }
 })();
+
+/* V3 OVERRIDES — ficha con galería real + módulo etiqueta 16 puntos */
+function renderProductGalleryV3(p){
+  const gallery = p.gallery && p.gallery.length ? p.gallery : (p.img ? [p.img] : []);
+  if(!gallery.length){
+    return `<div class="fiche-photos">
+      <div class="fphoto"><div style="aspect-ratio:1;display:grid;place-items:center;font-size:2rem;background:var(--paper-2);border:1px solid var(--line);border-radius:18px">🧴</div><span>Concentrado</span></div>
+      <div class="fphoto"><div style="aspect-ratio:1;display:grid;place-items:center;font-size:2rem;background:var(--paper-2);border:1px solid var(--line);border-radius:18px">🏷️</div><span>Etiqueta / listo para usar</span></div>
+    </div>`;
+  }
+  return `<div class="real-gallery">${gallery.map((src,idx)=>`
+    <div class="real-photo">
+      <img src="${src}" alt="${p.nombre} foto ${idx+1}" onerror="this.parentElement.style.display='none'">
+      <span>${idx===0?'Foto principal':idx===1?'Etiqueta / envase':idx===2?'Listo para usar':'Foto adicional'}</span>
+    </div>`).join('')}</div>`;
+}
+
+function openFicha(key){
+  const p = CONFIG.productos.find(x=>x.key===key); if(!p) return;
+  Track.event('open_product',{product:key});
+  const eppList = (p.epp && p.epp.length) ? p.epp : ['guantes','lentes','zapatos'];
+  const mezcla = p.noMezclar ? `<div class="fiche-sec"><div class="danger-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><b>Nunca mezclar con ${p.noMezclar}.</b><br><span style="font-size:.92rem;color:var(--tx)">Puede generar gases tóxicos.</span></div></div></div>` : '';
+  document.getElementById('ficheBody').innerHTML = `
+    <div class="fiche-hero">
+      ${renderProductGalleryV3(p)}
+      <h2>${p.nombre}</h2>
+      <div class="sig">${senalPill(p.senal)}</div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h">Fotos reales del producto</div>
+      <p style="color:var(--tx-soft);font-size:.94rem">Use estas imágenes para reconocer el producto por su nombre, envase y etiqueta. No lo identifique solo por color.</p>
+    </div>
+    <div class="fiche-sec">
+      <div class="h" style="color:var(--sage)">Sirve para</div>
+      <div class="chips">${p.sirve.map(s=>`<span class="chip">✓ ${s}</span>`).join('')}</div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h" style="color:var(--rust)">No se usa para</div>
+      <div class="chips">${p.noUsa.map(s=>`<span class="chip">✕ ${s}</span>`).join('')}</div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h">Recordatorio operativo</div>
+      <div class="dose"><div class="big">💡</div><div><small>${p.recordatorio}</small></div></div>
+    </div>
+    ${eppList.length ? `<div class="fiche-sec"><div class="h" style="color:var(--rust)">Protección obligatoria</div><div class="epp">${eppList.map(eppIcon).join('')}</div></div>` : ''}
+    ${mezcla}
+    <div class="fiche-actions">
+      <button class="btn btn-sage" onclick="go('etiqueta')">🏷️ Revisar etiqueta con 16 puntos</button>
+      ${p.sds ? `<a class="btn btn-ink" href="${p.sds}" target="_blank" onclick="Track.event('open_sds',{product:'${p.key}'})">Ver SDS oficial</a>` : ''}
+      <button class="btn btn-out" onclick="openSheet('duda','Producto: ${p.nombre}')">Tengo una duda</button>
+    </div>
+    <div class="helpful"><p>¿Esta ficha te ayudó?</p><div class="help-btns"><button onclick="helpful(this,'${p.key}','yes')">👍</button><button onclick="helpful(this,'${p.key}','no')">👎</button></div><div class="help-thanks">Gracias. Tu respuesta ayuda a mejorar la guía.</div></div>
+  `;
+  show('ficha');
+  navStack.push('ficha');
+}
+
+const LABEL_REQ_STATE = {};
+function renderLabelChecklist(){
+  const wrap = document.getElementById('labelChecklist');
+  if(!wrap) return;
+  wrap.innerHTML = LABEL_REQUIREMENTS_16.map(r => `
+    <div class="req-item" id="req-${r.id}">
+      <div>
+        <b>${r.id} · ${r.title}</b>
+        <small>${r.help}</small>
+      </div>
+      <div class="req-actions">
+        <button class="ok" onclick="markReq('${r.id}','ok')">Sí</button>
+        <button class="no" onclick="markReq('${r.id}','no')">No</button>
+        <button class="na" onclick="markReq('${r.id}','na')">NA</button>
+      </div>
+    </div>
+  `).join('');
+  updateReqSummary();
+}
+function markReq(id,status){
+  LABEL_REQ_STATE[id] = status;
+  const el = document.getElementById('req-'+id);
+  if(el){
+    el.style.borderColor = status==='ok' ? '#b8dcc9' : status==='no' ? '#e9c3b9' : 'var(--line)';
+    el.style.background = status==='ok' ? 'var(--sage-soft)' : status==='no' ? 'var(--rust-soft)' : 'var(--paper-2)';
+  }
+  updateReqSummary();
+  Track.event('label_requirement_marked',{requirement:id,status});
+}
+function updateReqSummary(){
+  const total = LABEL_REQUIREMENTS_16.length;
+  const ok = Object.values(LABEL_REQ_STATE).filter(x=>x==='ok').length;
+  const no = Object.values(LABEL_REQ_STATE).filter(x=>x==='no').length;
+  const na = Object.values(LABEL_REQ_STATE).filter(x=>x==='na').length;
+  const pending = total-ok-no-na;
+  const s = document.getElementById('reqSummary');
+  if(!s) return;
+  s.innerHTML = `<h3>Resultado de revisión</h3>
+    <p>Marque Sí, No o NA para cada punto. La meta es que la etiqueta esté completa, legible y adherida.</p>
+    <div class="score">${ok} / ${total}</div>
+    <p>Faltantes: ${no} · No aplica: ${na} · Pendientes: ${pending}</p>`;
+}
+function renderEtiquetaV3(){
+  const screen = document.getElementById('s-etiqueta');
+  if(!screen) return;
+  screen.innerHTML = `
+    <div class="shead">
+      <h2>Leer e inspeccionar una etiqueta</h2>
+      <p>La etiqueta debe cumplir los puntos requeridos. Toque cada parte o use el checklist.</p>
+    </div>
+    <div class="label-reference">
+      <h3>🏷️ ¿Qué debo revisar?</h3>
+      <p>Una etiqueta correcta debe tener nombre comercial, registro sanitario, fabricante/importador, ingredientes peligrosos, contenido neto, instrucciones, advertencias, primeros auxilios, teléfono de emergencia, pictogramas, lote y estar legible/adherida.</p>
+    </div>
+    <div class="label-demo">
+      <div class="label-band"><span class="lname hot" onclick="expl('nombre')">NOMBRE DEL PRODUCTO</span><span style="font-size:.8rem;opacity:.8">Etiqueta ejemplo</span></div>
+      <div class="label-body">
+        <div class="label-row"><span class="hot" onclick="expl('registro')">Registro sanitario</span> · <span class="hot" onclick="expl('tipo')">Tipo de producto</span></div>
+        <div class="label-row"><span class="hot" onclick="expl('fab')">Fabricante / Titular</span> · <span class="hot" onclick="expl('importador')">Importador</span></div>
+        <div class="label-row"><span class="hot" onclick="expl('ingredientes')">Ingredientes peligrosos</span> · <span class="hot" onclick="expl('contenido')">Contenido neto</span></div>
+        <div class="label-row">
+          <div class="label-pictos">
+            <div class="lpicto" onclick="expl('picto')"><span>⚠️</span></div>
+            <div class="lpicto" onclick="expl('picto')"><span>🧪</span></div>
+          </div>
+          <span class="hot" onclick="expl('instr')">Instrucciones, advertencias y riesgos</span>
+        </div>
+        <div class="label-row"><span class="hot" onclick="expl('auxilios')">Primeros auxilios / antídotos</span></div>
+        <div class="label-row"><span class="hot" onclick="expl('ninos')">Mantener fuera del alcance de los niños</span></div>
+        <div class="label-row"><span class="hot" onclick="expl('emerg')">☎️ Teléfono de emergencia</span> · <span class="hot" onclick="expl('lote')">Lote</span></div>
+      </div>
+    </div>
+    <div class="expl" id="labelExpl"></div>
+    <div class="label-actions">
+      <button class="btn btn-ink" onclick="resetReqChecklist()">Nueva revisión</button>
+      <button class="btn btn-out" onclick="openSheet('duda','Duda sobre etiqueta')">Tengo duda</button>
+    </div>
+    <div class="req-summary" id="reqSummary"></div>
+    <div class="req-list" id="labelChecklist"></div>
+  `;
+  renderLabelChecklist();
+}
+function resetReqChecklist(){
+  Object.keys(LABEL_REQ_STATE).forEach(k=>delete LABEL_REQ_STATE[k]);
+  renderLabelChecklist();
+  Track.event('label_checklist_reset',{});
+}
+function expl(k){
+  const map={
+    nombre:['Nombre comercial','Permite confirmar que el producto es el correcto. No use productos sin nombre visible.'],
+    registro:['Registro sanitario','Número de registro o inscripción sanitaria cuando aplique. Es evidencia de cumplimiento.'],
+    tipo:['Tipo de producto','Indica si es limpiador, desinfectante, pulidor, eliminador de olores, etc.'],
+    fab:['Fabricante / titular','Indica quién fabricó o es responsable del producto.'],
+    importador:['Importador','Indica quién lo importó o distribuyó en el país.'],
+    ingredientes:['Ingredientes peligrosos','Debe declarar ingredientes peligrosos por nombre químico y porcentaje según SDS.'],
+    contenido:['Contenido neto','Cantidad del producto en unidades correctas.'],
+    instr:['Instrucciones / advertencias / riesgos','Debe indicar uso, precauciones y riesgos para salud o ambiente.'],
+    auxilios:['Primeros auxilios / antídotos','Qué hacer si hay ingestión, inhalación o contacto con piel/ojos.'],
+    ninos:['Mantener fuera del alcance de niños','Esta advertencia debe aparecer en la etiqueta.'],
+    emerg:['Teléfono de emergencia','Número para intoxicaciones o emergencias del país donde se comercializa.'],
+    picto:['Pictogramas','Símbolos de peligro según clasificación aplicable. Deben verse claros y en color.'],
+    lote:['Número de lote','Permite rastrear el producto. No debe faltar.']
+  };
+  const [b,p]=map[k]||['Requisito','Revise que aparezca en la etiqueta.'];
+  const el=document.getElementById('labelExpl');
+  if(el){ el.innerHTML=`<b>${b}</b>${p}`; el.classList.add('show'); el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  Track.event('label_hotspot',{hotspot:k});
+}
+setTimeout(renderEtiquetaV3, 0);
+
 </script>
 </body>
 </html>
