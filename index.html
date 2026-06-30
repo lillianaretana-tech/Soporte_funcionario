@@ -326,6 +326,35 @@ img{display:block;max-width:100%}
 .gate-card .sub{text-align:center;color:var(--tx-soft);margin:6px 0 20px;font-size:.96rem}
 .gate-err{color:var(--rust);font-size:.86rem;font-weight:600;text-align:center;margin-top:10px;display:none}
 .gate-err.show{display:block}
+
+/* === FIX FOTOS PRODUCTOS === */
+.product-main-photo{
+  width:min(340px,92%);
+  margin:0 auto 16px;
+  background:var(--paper-2);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.product-main-photo img{
+  width:100%;
+  height:260px;
+  object-fit:contain;
+  border-radius:16px;
+  background:#fff;
+}
+.product-main-photo .missing-photo{
+  height:220px;
+  display:grid;
+  place-items:center;
+  color:var(--tx-soft);
+  text-align:center;
+  font-weight:600;
+  border:2px dashed var(--line);
+  border-radius:16px;
+}
+
 </style>
 </head>
 <body>
@@ -1092,5 +1121,97 @@ function enterApp(){
   if(u && u.nombre){ document.getElementById('gate').classList.add('hide'); Track.event('app_open',{}); }
 })();
 </script>
+
+<script>
+/* === FIX ROBUSTO PARA MOSTRAR FOTO DEL PRODUCTO === */
+(function(){
+  const originalOpenFicha = window.openFicha;
+  window.openFicha = function(key){
+    const p = CONFIG.productos.find(x=>x.key===key);
+    if(!p){
+      if(originalOpenFicha) return originalOpenFicha(key);
+      return;
+    }
+
+    Track.event('open_product',{product:key});
+
+    const imgPath = p.img || `assets/products/${key}.jpg`;
+    const imgBlock = `
+      <div class="product-main-photo">
+        <img src="${imgPath}" alt="${p.nombre}" onerror="this.outerHTML='<div class=&quot;missing-photo&quot;>📷<br>Foto no encontrada:<br>${imgPath}</div>'">
+      </div>
+    `;
+
+    const eppList = (p.epp && p.epp.length) ? p.epp : ['guantes','lentes','zapatos'];
+    const mezcla = p.noMezclar ? `
+      <div class="fiche-sec">
+        <div class="danger-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div><b>Nunca mezclar con ${p.noMezclar}.</b><br><span style="font-size:.92rem;color:var(--tx)">Puede generar gases tóxicos.</span></div>
+        </div>
+      </div>` : '';
+
+    document.getElementById('ficheBody').innerHTML = `
+      <div class="fiche-hero">
+        ${imgBlock}
+        <h2>${p.nombre}</h2>
+        <div class="sig">${senalPill(p.senal)}</div>
+      </div>
+
+      <div class="fiche-sec">
+        <div class="h">Fotos reales del producto</div>
+        <p style="color:var(--tx-soft);font-size:.94rem">
+          Use esta imagen para reconocer el producto por su nombre, envase y etiqueta. No lo identifique solo por color.
+        </p>
+      </div>
+
+      <div class="fiche-sec">
+        <div class="h" style="color:var(--sage)">Sirve para</div>
+        <div class="chips">${p.sirve.map(s=>`<span class="chip">✓ ${s}</span>`).join('')}</div>
+      </div>
+
+      <div class="fiche-sec">
+        <div class="h" style="color:var(--rust)">No se usa para</div>
+        <div class="chips">${p.noUsa.map(s=>`<span class="chip">✕ ${s}</span>`).join('')}</div>
+      </div>
+
+      <div class="fiche-sec">
+        <div class="h">Recordatorio operativo</div>
+        <div class="dose"><div class="big">💡</div><div><small>${p.recordatorio}</small></div></div>
+      </div>
+
+      <div class="fiche-sec">
+        <div class="h" style="color:var(--rust)">Protección obligatoria</div>
+        <div class="epp">${eppList.map(eppIcon).join('')}</div>
+      </div>
+
+      ${mezcla}
+
+      <div class="fiche-actions">
+        <button class="btn btn-sage" onclick="go('etiqueta')">🏷️ Revisar etiqueta con 16 puntos</button>
+        ${p.sds ? `<a class="btn btn-ink" href="${p.sds}" target="_blank" onclick="Track.event('open_sds',{product:'${p.key}'})">Ver SDS oficial</a>` : ''}
+        <button class="btn btn-out" onclick="openSheet('duda','Producto: ${p.nombre}')">Tengo una duda</button>
+      </div>
+
+      <div class="helpful">
+        <p>¿Esta ficha te ayudó?</p>
+        <div class="help-btns">
+          <button onclick="helpful(this,'${p.key}','yes')">👍</button>
+          <button onclick="helpful(this,'${p.key}','no')">👎</button>
+        </div>
+        <div class="help-thanks">Gracias. Tu respuesta ayuda a mejorar la guía.</div>
+      </div>
+    `;
+
+    show('ficha');
+    navStack.push('ficha');
+  };
+})();
+</script>
+
 </body>
 </html>
