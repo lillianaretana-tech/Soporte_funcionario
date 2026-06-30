@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="author" content="Lilly Tech">
+<meta name="copyright" content="© Lilly Tech. Todos los derechos reservados.">
+<meta name="theme-color" content="#0E1220">
+<title>Guía de Limpieza Segura · LillyTech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GUÍA DE LIMPIEZA SEGURA — LillyTech
+   Producto configurable. Toda la data vive en CONFIG (abajo).
+   ============================================================ */
+:root{
+  --ink:#0E1220; --ink-2:#171C2E;
+  --paper:#F7F4ED; --paper-2:#FFFFFF; --paper-3:#EEEADF;
+  --brass:#C39A45; --brass-deep:#A07E2E; --brass-soft:#EBD9A6;
+  --sage:#4F9E7A; --sage-soft:#DBEDE3;
+  --rust:#C2503A; --rust-soft:#F6DED7;
+  --amber:#E0922F; --amber-soft:#FBE6CD;
+  --blue:#3E72B0; --blue-soft:#DCE7F4;
+  --red:#CE3F3F; --yellow:#E4B53C; --green:#4F9E7A;
+  --tx:#191F2E; --tx-soft:#5C6478; --tx-faint:#9098A8;
+  --line:#E2DCCD;
+  --shadow:0 2px 6px rgba(14,18,32,.05),0 16px 40px -20px rgba(14,18,32,.28);
+  --shadow-lg:0 30px 70px -28px rgba(14,18,32,.4);
+  --r:22px; --r-sm:15px; --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--tx);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;margin:0;line-height:1.12;letter-spacing:-.015em;color:var(--ink);font-weight:600}
+p{margin:0}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--brass-soft)}
+
+/* ---------- App shell ---------- */
+.app{max-width:780px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:96px}
+.screen{display:none;animation:fade .3s var(--ease)}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- Top bar ---------- */
+.top{position:sticky;top:0;z-index:40;background:rgba(247,244,237,.86);backdrop-filter:saturate(1.2) blur(14px);
+  border-bottom:1px solid var(--line);padding:14px 20px;display:flex;align-items:center;gap:13px}
+.top .seal{width:40px;height:40px;border-radius:11px;background:linear-gradient(150deg,var(--brass),var(--brass-deep));
+  display:grid;place-items:center;color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;flex:none;box-shadow:0 6px 14px -6px rgba(160,126,46,.6)}
+.top .t-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.12rem;color:var(--ink);line-height:1.1}
+.top .t-sub{font-size:.72rem;color:var(--tx-soft);font-weight:500}
+.top .back{margin-left:auto;width:42px;height:42px;border-radius:12px;background:var(--paper-2);border:1px solid var(--line);
+  display:none;place-items:center;flex:none}
+.top .back svg{width:22px;height:22px;color:var(--ink)}
+.top.sub .back{display:grid}
+.top.sub .seal{display:none}
+
+/* ---------- Search ---------- */
+.search-wrap{padding:18px 20px 6px}
+.search{display:flex;align-items:center;gap:12px;background:var(--paper-2);border:2px solid var(--line);border-radius:16px;
+  padding:15px 18px;transition:border-color .15s,box-shadow .15s}
+.search:focus-within{border-color:var(--brass);box-shadow:0 0 0 4px rgba(195,154,69,.16)}
+.search svg{width:24px;height:24px;color:var(--tx-soft);flex:none}
+.search input{border:none;outline:none;background:none;font-size:1.08rem;width:100%;color:var(--tx);font-family:inherit}
+.search input::placeholder{color:var(--tx-faint)}
+.suggest{margin:8px 20px 0;background:var(--paper-2);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:none}
+.suggest.show{display:block}
+.sug-item{display:flex;align-items:center;gap:13px;padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
+.sug-item:last-child{border-bottom:none}
+.sug-item:hover,.sug-item:active{background:var(--paper-3)}
+.sug-thumb{width:40px;height:40px;border-radius:10px;background:var(--paper-3);object-fit:cover;flex:none}
+.sug-item b{font-size:1rem;color:var(--ink);font-weight:600}
+.sug-item small{display:block;color:var(--tx-soft);font-size:.84rem}
+
+/* ---------- Home hero ---------- */
+.hero{padding:22px 20px 6px}
+.hero h1{font-size:1.7rem;margin-bottom:6px}
+.hero p{color:var(--tx-soft);font-size:1.02rem}
+
+/* ---------- Module grid ---------- */
+.modules{padding:18px 20px 8px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mod{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;text-align:left;
+  display:flex;flex-direction:column;gap:12px;min-height:140px;transition:transform .16s var(--ease),box-shadow .16s var(--ease);position:relative;overflow:hidden}
+.mod:active{transform:scale(.97)}
+.mod:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.mod .m-ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;font-size:1.7rem}
+.mod .m-ic svg{width:28px;height:28px}
+.mod h3{font-size:1.14rem;line-height:1.15}
+.mod p{font-size:.86rem;color:var(--tx-soft);margin-top:-4px}
+.mod.big{grid-column:1 / -1;flex-direction:row;align-items:center;min-height:auto}
+.mod.big .m-ic{flex:none}
+.mod.big .m-tx{flex:1}
+.mod .chev{position:absolute;top:18px;right:18px;color:var(--tx-faint)}
+.mod .chev svg{width:20px;height:20px}
+.tint-brass{background:var(--brass-soft);color:var(--brass-deep)}
+.tint-sage{background:var(--sage-soft);color:var(--sage)}
+.tint-rust{background:var(--rust-soft);color:var(--rust)}
+.tint-amber{background:var(--amber-soft);color:var(--amber)}
+.tint-blue{background:var(--blue-soft);color:var(--blue)}
+.tint-ink{background:#E4E2DA;color:var(--ink)}
+
+/* ---------- Section headers inside screens ---------- */
+.shead{padding:20px 20px 6px}
+.shead h2{font-size:1.5rem}
+.shead p{color:var(--tx-soft);margin-top:4px;font-size:.98rem}
+.pad{padding:14px 20px}
+
+/* ---------- Task picker (No sé cuál usar) ---------- */
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:13px;padding:14px 20px}
+.task{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:20px 14px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;text-align:center;transition:transform .14s,box-shadow .14s,border-color .14s}
+.task:active{transform:scale(.96)}
+.task:hover{border-color:var(--brass);box-shadow:var(--shadow)}
+.task .emoji{font-size:2.1rem;line-height:1}
+.task span{font-weight:600;font-size:.98rem;color:var(--ink)}
+
+/* ---------- Result card ---------- */
+.result{padding:16px 20px}
+.rcard{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.rcard-top{background:linear-gradient(135deg,var(--ink),var(--ink-2));color:var(--paper);padding:20px 22px}
+.rcard-top .lbl{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--brass-soft);font-weight:600}
+.rcard-top h3{color:#fff;font-size:1.5rem;margin-top:4px}
+.rcard-body{padding:20px 22px;display:grid;gap:16px}
+.rrow{display:flex;gap:13px;align-items:flex-start}
+.rrow .ric{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+.rrow .ric svg{width:18px;height:18px}
+.rrow .rt b{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--tx-soft);margin-bottom:2px}
+.rrow .rt span{font-size:1.02rem;color:var(--tx)}
+.ok .ric{background:var(--sage-soft);color:var(--sage)}
+.no .ric{background:var(--rust-soft);color:var(--rust)}
+.rem .ric{background:var(--amber-soft);color:var(--amber)}
+
+/* ---------- Product list ---------- */
+.plist{padding:14px 20px;display:grid;gap:13px}
+.pcard{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;gap:15px;align-items:center;
+  transition:transform .14s,box-shadow .14s}
+.pcard:active{transform:scale(.98)}
+.pcard:hover{box-shadow:var(--shadow)}
+.pcard .pthumb{width:74px;height:74px;border-radius:14px;object-fit:cover;background:var(--paper-3);flex:none;border:1px solid var(--line)}
+.pcard .pmeta{flex:1;min-width:0}
+.pcard .pmeta h3{font-size:1.12rem}
+.pcard .pmeta .use{font-size:.9rem;color:var(--tx-soft);margin-top:2px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:999px;margin-top:7px}
+.pill.peligro{background:var(--rust-soft);color:var(--rust)}
+.pill.atencion{background:var(--amber-soft);color:var(--amber-deep,#A86A1C)}
+.pcard .chev svg{width:22px;height:22px;color:var(--tx-faint)}
+
+/* ---------- Product detail (ficha) ---------- */
+.fiche{padding:0 0 20px}
+.fiche-hero{background:linear-gradient(160deg,var(--paper-3),var(--paper-2));padding:24px 22px;text-align:center;border-bottom:1px solid var(--line)}
+.fiche-photos{display:flex;gap:14px;justify-content:center;margin-bottom:16px}
+.fphoto{flex:1;max-width:150px}
+.fphoto img{width:100%;aspect-ratio:1;object-fit:contain;background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:8px}
+.fphoto span{display:block;font-size:.72rem;color:var(--tx-soft);margin-top:6px;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.fiche-hero h2{font-size:1.7rem}
+.fiche-hero .sig{margin-top:10px}
+.fiche-sec{padding:18px 22px;border-bottom:1px solid var(--line)}
+.fiche-sec .h{font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-soft);font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.fiche-sec .h svg{width:16px;height:16px}
+.dose{display:flex;align-items:center;gap:14px;background:var(--brass-soft);border-radius:16px;padding:16px 18px}
+.dose .big{font-family:'Fraunces',serif;font-size:1.9rem;color:var(--brass-deep);font-weight:700;line-height:1}
+.dose small{color:var(--brass-deep);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--paper-3);border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:.92rem;font-weight:500}
+.chip svg{width:15px;height:15px}
+.danger-box{background:var(--rust-soft);border:1px solid #E9C3B9;border-radius:16px;padding:15px 17px;display:flex;gap:12px;align-items:flex-start}
+.danger-box svg{width:22px;height:22px;color:var(--rust);flex:none;margin-top:1px}
+.danger-box b{color:var(--rust)}
+.epp{display:flex;gap:12px;flex-wrap:wrap}
+.epp .e{display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--paper-3);border:1px solid var(--line);border-radius:14px;padding:13px 16px;min-width:84px}
+.epp .e svg{width:30px;height:30px;color:var(--ink)}
+.epp .e span{font-size:.78rem;color:var(--tx-soft);font-weight:600}
+.fiche-actions{padding:18px 22px;display:grid;gap:11px}
+
+/* ---------- Buttons ---------- */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:600;font-size:1.05rem;padding:16px;border-radius:15px;transition:transform .14s,box-shadow .14s,background .14s;width:100%}
+.btn:active{transform:scale(.98)}
+.btn svg{width:20px;height:20px}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:var(--ink-2)}
+.btn-out{background:var(--paper-2);color:var(--ink);border:1.5px solid var(--line)}
+.btn-out:hover{border-color:var(--brass)}
+.btn-sage{background:var(--sage);color:#fff}
+.btn-row{display:flex;gap:10px}
+.btn-row .btn{font-size:.96rem;padding:14px}
+
+/* ---------- Flip cards (GHS / NFPA) ---------- */
+.flip-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 20px}
+.flip{background:none;perspective:1200px;height:200px}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .6s var(--ease);transform-style:preserve-3d;cursor:pointer}
+.flip.flipped .flip-in{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;background:var(--paper-2);box-shadow:var(--shadow)}
+.flip-front .gsym{font-size:3.4rem;line-height:1}
+.flip-front .gsvg{width:78px;height:78px}
+.flip-front b{margin-top:12px;font-size:1.05rem;color:var(--ink);font-weight:600}
+.flip-back{transform:rotateY(180deg);background:var(--ink);color:var(--paper);justify-content:center;gap:6px}
+.flip-back b{font-size:1.05rem;color:#fff}
+.flip-back p{font-size:.88rem;color:rgba(247,244,237,.82);line-height:1.4}
+.flip .hintf{position:absolute;bottom:10px;right:12px;font-size:.66rem;color:var(--tx-faint)}
+.flip-back .hintf{color:rgba(247,244,237,.5)}
+
+/* ---------- NFPA diamond ---------- */
+.nfpa-wrap{padding:30px 20px 20px;text-align:center}
+.nfpa-wrap h3{margin-bottom:6px}
+.diamond{width:186px;height:186px;margin:44px auto 40px;transform:rotate(45deg);display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.dq{display:grid;place-items:center}
+.dq span{transform:rotate(-45deg);font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:#fff}
+.dq.b{background:var(--blue);border-radius:14px 0 0 0}
+.dq.r{background:var(--red);border-radius:0 14px 0 0}
+.dq.y{background:var(--yellow);border-radius:0 0 14px 0}
+.dq.w{background:#fff;border:2px solid var(--ink);border-radius:0 0 0 14px}
+.dq.w span{color:var(--ink)}
+
+/* ---------- Label reader (etiqueta interactiva) ---------- */
+.label-demo{margin:14px 20px;background:var(--paper-2);border:2px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.label-band{background:var(--ink);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.label-band .lname{font-weight:700;font-size:1.15rem;cursor:pointer;border-bottom:2px dashed var(--brass-soft)}
+.label-body{padding:16px}
+.hot{cursor:pointer;border-bottom:2px dashed var(--brass);transition:background .12s;border-radius:4px;padding:1px 3px}
+.hot:hover,.hot:active{background:var(--brass-soft)}
+.label-row{display:flex;gap:10px;margin-bottom:13px;align-items:center;flex-wrap:wrap}
+.label-pictos{display:flex;gap:8px}
+.lpicto{width:50px;height:50px;border:2px solid var(--red);transform:rotate(45deg);display:grid;place-items:center;cursor:pointer;border-radius:6px}
+.lpicto span{transform:rotate(-45deg);font-size:1.4rem}
+.expl{margin:0 20px 14px;background:var(--blue-soft);border:1px solid #C5D7EC;border-radius:14px;padding:14px 16px;display:none;animation:fade .25s}
+.expl.show{display:block}
+.expl b{color:var(--blue);display:block;margin-bottom:3px}
+
+/* ---------- Emergencies ---------- */
+.emg-list{padding:14px 20px;display:grid;gap:12px}
+.emg{display:flex;align-items:center;gap:15px;background:var(--paper-2);border:1px solid var(--line);border-left:5px solid var(--rust);border-radius:16px;padding:17px 18px;transition:transform .14s,box-shadow .14s}
+.emg:active{transform:scale(.98)}
+.emg:hover{box-shadow:var(--shadow)}
+.emg .ee{font-size:2rem}
+.emg b{font-size:1.12rem;color:var(--ink)}
+.emg .chev svg{width:22px;height:22px;color:var(--tx-faint);margin-left:auto}
+.steps3{padding:16px 20px;display:grid;gap:13px}
+.step3{display:flex;gap:15px;align-items:flex-start;background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.step3 .n{width:38px;height:38px;border-radius:50%;background:var(--rust);color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.2rem;display:grid;place-items:center;flex:none}
+.step3 p{font-size:1.05rem;padding-top:5px}
+
+/* ---------- Color code ---------- */
+.colors{padding:14px 20px;display:grid;gap:14px}
+.color-card{background:var(--paper-2);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex}
+.color-bar{width:14px;flex:none}
+.color-in{padding:16px 18px;flex:1}
+.color-in h3{font-size:1.2rem;display:flex;align-items:center;gap:10px}
+.dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(0,0,0,.1)}
+.color-in .yes{color:var(--sage);font-weight:600;font-size:.94rem;margin-top:8px;display:flex;gap:7px;align-items:flex-start}
+.color-in .nope{color:var(--rust);font-weight:600;font-size:.94rem;margin-top:5px;display:flex;gap:7px;align-items:flex-start}
+.color-in svg{width:16px;height:16px;flex:none;margin-top:3px}
+
+/* ---------- Quiz mini ---------- */
+.quiz{margin:14px 20px;background:var(--paper-2);border:1px solid var(--line);border-radius:18px;padding:18px}
+.quiz h4{font-size:1.1rem;margin-bottom:14px}
+.quiz-opts{display:grid;gap:10px}
+.qopt{padding:14px 16px;border:1.5px solid var(--line);border-radius:13px;font-weight:500;font-size:1rem;text-align:left;transition:all .15s;background:var(--paper-2)}
+.qopt:active{transform:scale(.98)}
+.qopt.correct{background:var(--sage-soft);border-color:var(--sage);color:#2f6b50}
+.qopt.wrong{background:var(--rust-soft);border-color:var(--rust);color:var(--rust)}
+
+/* ---------- Helpful (¿Me ayudó?) ---------- */
+.helpful{margin:18px 20px;background:var(--paper-3);border-radius:18px;padding:18px;text-align:center}
+.helpful p{font-weight:600;margin-bottom:12px}
+.help-btns{display:flex;gap:12px;justify-content:center}
+.help-btns button{width:64px;height:64px;border-radius:18px;background:var(--paper-2);border:1.5px solid var(--line);font-size:1.7rem;transition:transform .14s}
+.help-btns button:active{transform:scale(.9)}
+.help-btns button.sel{border-color:var(--brass);background:var(--brass-soft)}
+.help-thanks{color:var(--sage);font-weight:600;margin-top:10px;display:none}
+.help-thanks.show{display:block}
+
+/* ---------- Floating "Tengo una duda" ---------- */
+.fab{position:fixed;right:18px;bottom:18px;z-index:50;background:var(--ink);color:var(--paper);border-radius:18px;
+  padding:15px 20px;display:flex;align-items:center;gap:10px;font-weight:600;box-shadow:var(--shadow-lg);transition:transform .15s}
+.fab:active{transform:scale(.95)}
+.fab svg{width:22px;height:22px}
+@media(max-width:560px){.fab span{display:none}.fab{padding:16px;border-radius:50%}}
+
+/* ---------- Sheet / modal ---------- */
+.sheet-bg{position:fixed;inset:0;background:rgba(14,18,32,.5);z-index:60;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)}
+.sheet-bg.show{display:flex;animation:fade .2s}
+.sheet{background:var(--paper);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:24px 22px calc(24px + env(safe-area-inset-bottom));
+  max-height:92vh;overflow-y:auto;animation:up .3s var(--ease)}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sheet-h h3{font-size:1.4rem}
+.sheet-x{width:40px;height:40px;border-radius:12px;background:var(--paper-3);display:grid;place-items:center}
+.sheet-x svg{width:22px;height:22px}
+.field{display:flex;flex-direction:column;gap:6px;margin-top:14px}
+.field label{font-size:.82rem;font-weight:700;color:var(--tx-soft)}
+.field input,.field select,.field textarea{background:var(--paper-2);border:1.5px solid var(--line);border-radius:13px;
+  padding:14px;font-size:1.02rem;font-family:inherit;color:var(--tx);outline:none;transition:border-color .15s}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brass)}
+.field textarea{min-height:90px;resize:vertical}
+.photo-drop{border:2px dashed var(--line);border-radius:14px;padding:20px;text-align:center;color:var(--tx-soft);font-size:.92rem;margin-top:14px}
+.photo-drop svg{width:30px;height:30px;color:var(--tx-faint);margin:0 auto 6px;display:block}
+
+/* ---------- Toast ---------- */
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);z-index:90;background:var(--ink);color:var(--paper);
+  padding:14px 22px;border-radius:14px;font-weight:600;box-shadow:var(--shadow-lg);opacity:0;transition:all .3s var(--ease);pointer-events:none;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- Footer ---------- */
+.foot{text-align:center;color:var(--tx-faint);font-size:.78rem;padding:24px 20px}
+.foot b{color:var(--brass-deep)}
+
+@media(max-width:420px){
+  body{font-size:16px}
+  .modules,.tasks{grid-template-columns:1fr}
+  .flip-grid{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- Gate: ¿Quién sos? ---------- */
+.gate{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,var(--ink),var(--ink-2));display:flex;align-items:center;justify-content:center;padding:24px}
+.gate.hide{display:none}
+.gate-card{background:var(--paper);border-radius:26px;padding:30px 26px calc(30px + env(safe-area-inset-bottom));max-width:440px;width:100%;box-shadow:var(--shadow-lg);max-height:92vh;overflow-y:auto}
+.gate-seal{width:58px;height:58px;border-radius:16px;background:linear-gradient(150deg,var(--brass),var(--brass-deep));display:grid;place-items:center;color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;margin:0 auto 16px;box-shadow:0 8px 18px -6px rgba(160,126,46,.6)}
+.gate-card h2{text-align:center;font-size:1.5rem}
+.gate-card .sub{text-align:center;color:var(--tx-soft);margin:6px 0 20px;font-size:.96rem}
+.gate-err{color:var(--rust);font-size:.86rem;font-weight:600;text-align:center;margin-top:10px;display:none}
+.gate-err.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- ===== GATE: identificación obligatoria ===== -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-seal">LT</div>
+    <h2>Antes de empezar</h2>
+    <p class="sub">Decinos quién sos. Así, si tenés una consulta, sabemos a quién responder.</p>
+    <div class="field"><label>Tu nombre</label><input id="gNombre" type="text" placeholder="Nombre y apellido" autocomplete="name"></div>
+    <div class="field"><label>Proyecto / Lugar de trabajo</label><input id="gProyecto" type="text" placeholder="¿Dónde trabajás?"></div>
+    <div class="gate-err" id="gateErr">Escribí tu nombre y tu proyecto para continuar.</div>
+    <button class="btn btn-ink" style="margin-top:20px" onclick="enterApp()">Entrar</button>
+    <p style="text-align:center;color:var(--tx-faint);font-size:.78rem;margin-top:12px">Tu actividad ayuda a mejorar la guía. No pedimos contraseñas.</p>
+  </div>
+</div>
+<div class="app">
+
+  <!-- ===== TOP BAR ===== -->
+  <div class="top" id="topbar">
+    <div class="seal" id="topSeal">LT</div>
+    <button class="back" id="backBtn" aria-label="Volver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <div id="topText">
+      <div class="t-name" id="topName">Guía de Limpieza Segura</div>
+      <div class="t-sub" id="topSub">Consulta rápida para personal operativo</div>
+    </div>
+  </div>
+
+  <!-- ===================== HOME ===================== -->
+  <div class="screen active" id="s-home">
+    <div class="search-wrap">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="¿Qué necesitás? Ej: baño, vidrio, sarro…" autocomplete="off">
+      </div>
+    </div>
+    <div class="suggest" id="suggest"></div>
+
+    <div class="hero">
+      <h1>¿En qué te ayudo?</h1>
+      <p>Tocá una opción. Encontrá la respuesta en segundos.</p>
+    </div>
+
+    <div class="modules">
+      <button class="mod big" onclick="go('asistente')">
+        <div class="m-ic tint-brass">🤔</div>
+        <div class="m-tx"><h3>No sé cuál usar</h3><p>Decime la tarea y te digo el producto.</p></div>
+        <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+
+      <button class="mod" onclick="go('productos')">
+        <div class="m-ic tint-sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 2h6M10 2v4l-3 7a2 2 0 0 0 2 3h6a2 2 0 0 0 2-3l-3-7V2"/><line x1="8" y1="14" x2="16" y2="14"/></svg></div>
+        <h3>Productos</h3><p>Ficha de cada uno.</p>
+      </button>
+
+      <button class="mod" onclick="go('etiqueta')">
+        <div class="m-ic tint-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+        <h3>Leer una etiqueta</h3><p>Tocá y aprendé.</p>
+      </button>
+
+      <button class="mod" onclick="go('ghs')">
+        <div class="m-ic tint-rust">⚠️</div>
+        <h3>Pictogramas GHS</h3><p>Qué significa cada uno.</p>
+      </button>
+
+      <button class="mod" onclick="go('nfpa')">
+        <div class="m-ic tint-amber">🔶</div>
+        <h3>Rombo NFPA</h3><p>Los 4 colores.</p>
+      </button>
+
+      <button class="mod" onclick="go('colores')">
+        <div class="m-ic tint-ink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 2a10 10 0 1 0 0 20 1.5 1.5 0 0 0 1.06-2.56 1.5 1.5 0 0 1 1.06-2.56H16a4 4 0 0 0 4-4 10 10 0 0 0-8-8z"/></svg></div>
+        <h3>Código de colores</h3><p>Paños y mechas.</p>
+      </button>
+
+      <button class="mod" onclick="go('compat')">
+        <div class="m-ic tint-rust">⚗️</div>
+        <h3>¿Se pueden juntar?</h3><p>Verificá dos productos.</p>
+      </button>
+
+      <button class="mod big" onclick="go('emergencias')" style="border-color:#E9C3B9;background:linear-gradient(135deg,var(--rust-soft),var(--paper-2))">
+        <div class="m-ic" style="background:var(--rust);color:#fff">🆘</div>
+        <div class="m-tx"><h3>Emergencias</h3><p>¿Qué hago si me cayó algo? Pasos rápidos.</p></div>
+        <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </button>
+    </div>
+
+    <div class="foot">Una herramienta de <b>LillyTech</b> · © Lilly Tech. Todos los derechos reservados.</div>
+  </div>
+
+  <!-- ===================== ASISTENTE ===================== -->
+  <div class="screen" id="s-asistente">
+    <div class="shead"><h2>¿Qué vas a hacer?</h2><p>Tocá la tarea y te recomiendo el producto.</p></div>
+    <div class="tasks" id="taskGrid"></div>
+    <div class="result" id="taskResult"></div>
+  </div>
+
+  <!-- ===================== PRODUCTOS ===================== -->
+  <div class="screen" id="s-productos">
+    <div class="shead"><h2>Productos</h2><p>Tocá uno para ver su ficha.</p></div>
+    <div class="plist" id="prodList"></div>
+  </div>
+
+  <!-- ===================== FICHA PRODUCTO ===================== -->
+  <div class="screen" id="s-ficha"><div class="fiche" id="ficheBody"></div></div>
+
+  <!-- ===================== ETIQUETA ===================== -->
+  <div class="screen" id="s-etiqueta">
+    <div class="shead"><h2>Leé una etiqueta</h2><p>Tocá cada parte subrayada para entenderla.</p></div>
+    <div class="label-demo">
+      <div class="label-band"><span class="lname hot" onclick="expl('nombre')">PROFECT 256</span><span style="font-size:.8rem;opacity:.8">LillyTech</span></div>
+      <div class="label-body">
+        <div class="label-row">
+          <span class="hot" onclick="expl('fab')">Fabricado por: LillyTech Labs</span>
+        </div>
+        <div class="label-row">
+          <div class="label-pictos">
+            <div class="lpicto" onclick="expl('picto')"><span>⚠️</span></div>
+            <div class="lpicto" onclick="expl('picto')"><span>🧪</span></div>
+          </div>
+          <span class="hot" onclick="expl('instr')">Instrucciones de uso · No mezclar con ácidos</span>
+        </div>
+        <div class="label-row">
+          <span class="hot" onclick="expl('epp')">🧤 Usar guantes y lentes</span>
+        </div>
+        <div class="label-row">
+          <span class="hot" onclick="expl('emerg')">☎️ Emergencias: 2222-0000</span>
+        </div>
+      </div>
+    </div>
+    <div class="expl" id="labelExpl"></div>
+    <div class="shead" style="padding-top:10px"><h2>Juego: ¿qué le falta?</h2><p>Mirá la etiqueta y detectá el error.</p></div>
+    <div id="labelGame"></div>
+  </div>
+
+  <!-- ===================== GHS ===================== -->
+  <div class="screen" id="s-ghs">
+    <div class="shead"><h2>Pictogramas GHS</h2><p>Tocá la tarjeta para girarla.</p></div>
+    <div class="flip-grid" id="ghsGrid"></div>
+    <div class="shead"><h2>Mini reto</h2><p>¿Cuál de estos es inflamable?</p></div>
+    <div class="quiz" id="ghsQuiz"></div>
+  </div>
+
+  <!-- ===================== NFPA ===================== -->
+  <div class="screen" id="s-nfpa">
+    <div class="shead"><h2>Rombo NFPA</h2><p>Tocá cada color para girarlo.</p></div>
+    <div class="flip-grid" id="nfpaGrid"></div>
+    <div class="nfpa-wrap">
+      <h3 style="margin-bottom:6px">Así se lee completo</h3>
+      <p style="color:var(--tx-soft);font-size:.95rem">Cada número va de 0 (nada) a 4 (máximo).</p>
+      <div class="diamond">
+        <div class="dq b"><span>2</span></div><div class="dq r"><span>3</span></div>
+        <div class="dq w"><span>—</span></div><div class="dq y"><span>1</span></div>
+      </div>
+      <p style="color:var(--tx-soft);font-size:.92rem;max-width:340px;margin:8px auto 0">Azul = salud · Rojo = inflamable · Amarillo = reactividad · Blanco = especial.</p>
+    </div>
+  </div>
+
+  <!-- ===================== COLORES ===================== -->
+  <div class="screen" id="s-colores">
+    <div class="shead"><h2>Código de colores</h2><p>Cada color, su uso. (Configurable por empresa.)</p></div>
+    <div class="colors" id="colorList"></div>
+  </div>
+
+  <!-- ===================== EMERGENCIAS ===================== -->
+  <div class="screen" id="s-emergencias">
+    <div class="shead"><h2>Emergencias</h2><p>Tocá lo que pasó. Pasos rápidos.</p></div>
+    <div class="emg-list" id="emgList"></div>
+    <div id="emgDetail"></div>
+  </div>
+
+  <!-- ===================== COMPATIBILIDAD ===================== -->
+  <div class="screen" id="s-compat">
+    <div class="shead"><h2>¿Se pueden juntar?</h2><p>Elegí dos productos. Te digo si es seguro guardarlos o usarlos cerca.</p></div>
+    <div class="pad" style="display:grid;gap:13px">
+      <div class="field"><label>Producto 1</label><select id="cA"></select></div>
+      <div class="field"><label>Producto 2</label><select id="cB"></select></div>
+      <button class="btn btn-ink" onclick="checkCompat()">Verificar</button>
+    </div>
+    <div id="compatResult" class="pad"></div>
+    <div class="pad" style="color:var(--tx-faint);font-size:.84rem;text-align:center">Ante cualquier duda, consultá la SDS y a tu supervisor.</div>
+  </div>
+
+</div>
+
+<!-- FAB -->
+<button class="fab" onclick="openSheet('duda')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/><circle cx="12" cy="12" r="10"/></svg><span>Tengo una duda</span></button>
+
+<!-- SHEET -->
+<div class="sheet-bg" id="sheetBg" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet" id="sheetContent"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG — Todo lo editable vive acá (catálogo, colores, marca).
+   En el futuro esto viene de Supabase sin tocar el resto del código.
+   ============================================================ */
+const CONFIG = {
+  marca: { nombre:"Guía de Limpieza Segura", sub:"Consulta rápida para personal operativo", sello:"LT", empresa:"LillyTech" },
+  // Emergencias del producto (placeholder, configurable)
+  telEmergencia: "2222-0000",
+  supervisorWA: "50688035571",
+
+  productos: [
+    { key:"profect256", nombre:"Profect 256 Super HDQ", tipo:"Desinfectante", senal:"peligro",
+      img:"images/products/profect256.jpg", sds:"sds/profect256.pdf",
+      sirve:["Desinfecta todas las áreas","Mata gérmenes en superficies","Áreas de contacto frecuente"],
+      noUsa:["No para vidrios ni espejos","No sobre alimentos"],
+      recordatorio:"Dejá actuar el producto antes de secar.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"Clean by Peroxy, SparCling ni SparCreme",
+      tareas:["desinfectar"], sinon:["desinfectar","desinfectante","sanitizar","matar germenes","virus","bacteria","hdq"] },
+
+    { key:"nabc", nombre:"NABC", tipo:"Desinfectante de baños", senal:"peligro",
+      img:"images/products/nabc.jpg", sds:"sds/nabc.pdf",
+      sirve:["Desinfecta baños en especial","Inodoros, urinarios y superficies","Limpia y desodoriza"],
+      noUsa:["No sobre alimentos"],
+      recordatorio:"Producto de baño: usá los implementos rojos.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"Clean by Peroxy, SparCling ni SparCreme",
+      tareas:["bano"], sinon:["baño","inodoro","urinario","servicio sanitario","sanitario","desinfectar baño","nabc"] },
+
+    { key:"sparcling", nombre:"SparCling", tipo:"Limpiador de baños · pule loza", senal:"peligro",
+      img:"images/products/sparcling.jpg", sds:"sds/sparcling.pdf",
+      sirve:["Baños: pule la loza","Inodoros y urinarios","Quita sarro e incrustaciones"],
+      noUsa:["No en superficies delicadas sin probar"],
+      recordatorio:"Guantes y lentes siempre.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"SC-200, TriBase, Profect 256 ni NABC",
+      tareas:["bano"], sinon:["sarro","cal","loza","incrustacion","amarillo del inodoro","pulir loza","sparcling"] },
+
+    { key:"sparcreme", nombre:"SparCreme", tipo:"Crema para pulir", senal:"peligro",
+      img:"images/products/sparcreme.jpg", sds:"sds/sparcreme.pdf",
+      sirve:["Pule metales y loza","Inodoros, orinales y lavamanos","Limpia sin rayar"],
+      noUsa:["No en superficies muy delicadas sin probar"],
+      recordatorio:"Probá en un rincón antes en superficies delicadas.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"SC-200, TriBase, Profect 256 ni NABC",
+      tareas:[], sinon:["crema","pulir","abrillantar","metal","loza","lavamanos","sparcreme"] },
+
+    { key:"tribase", nombre:"TriBase Multi Purpose", tipo:"Limpiador neutro multiuso", senal:"atencion",
+      img:"images/products/tribase.jpg", sds:"sds/tribase.pdf",
+      sirve:["Pisos, paredes y muebles","Limpieza sobre metal","Desengrasante leve"],
+      noUsa:["No para desinfección hospitalaria"],
+      recordatorio:"Ideal para limpieza diaria de mantenimiento.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"SparCling ni SparCreme",
+      tareas:["pisos"], sinon:["neutro","multiuso","pisos","paredes","muebles","desengrasante leve","general","tribase"] },
+
+    { key:"sc200", nombre:"SC-200", tipo:"Quita manchas · desengrasante fuerte", senal:"peligro",
+      img:"images/products/sc200.jpg", sds:"sds/sc200.pdf",
+      sirve:["Quita manchas difíciles","Desengrasante fuerte","Superficies resistentes"],
+      noUsa:["No en superficies delicadas","No sobre alimentos"],
+      recordatorio:"Es fuerte: guantes y lentes siempre.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"SparCling ni SparCreme",
+      tareas:["manchas"], sinon:["mancha","manchas","grasa","desengrasante","fuerte","sc200","sc-200"] },
+
+    { key:"peroxy", nombre:"Clean by Peroxy", tipo:"Limpiador de vidrios y espejos", senal:"atencion",
+      img:"images/products/peroxy.jpg", sds:"sds/peroxy.pdf",
+      sirve:["Vidrios y espejos","Limpieza general","Deja sin marcas"],
+      noUsa:["No sobre alimentos"],
+      recordatorio:"Ventilá el área mientras lo usás.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"Profect 256 ni NABC",
+      tareas:["vidrio"], sinon:["vidrio","vidrios","espejo","espejos","ventana","peroxy","brillo vidrio"] },
+
+    { key:"bonnet", nombre:"Bonnet & Traffic Lane", tipo:"Limpiador de alfombras y muebles", senal:"peligro",
+      img:"images/products/bonnet.jpg", sds:"sds/bonnet.pdf",
+      sirve:["Lavado de alfombras","Limpieza de muebles","Zonas de mucho tránsito"],
+      noUsa:["No para pisos duros"],
+      recordatorio:"Aspirá primero. Probá color en zona oculta.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"",
+      tareas:["alfombra"], sinon:["alfombra","carpeta","tapete","mueble","sillon","trafico","bonnet"] },
+
+    { key:"airlift_tropical", nombre:"Air Lift Tropical", tipo:"Eliminador de olores", senal:"atencion",
+      img:"images/products/airlift_tropical.jpg", sds:"sds/airlift_tropical.pdf",
+      sirve:["Elimina malos olores","Aroma agradable","Áreas comunes y baños"],
+      noUsa:["No rociar sobre alimentos","No directo a personas"],
+      recordatorio:"No es desinfectante: solo controla olores.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"",
+      tareas:["olor"], sinon:["olor","aroma","huele mal","ambientador","tropical","airlift"] },
+
+    { key:"airlift_odor", nombre:"Air Lift Odor Eliminator", tipo:"Eliminador de olores", senal:"atencion",
+      img:"images/products/airlift_odor.jpg", sds:"sds/airlift_odor.pdf",
+      sirve:["Neutraliza malos olores","No solo los tapa"],
+      noUsa:["No rociar sobre alimentos"],
+      recordatorio:"Para olores fuertes, ventilá además el área.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"",
+      tareas:["olor"], sinon:["olor","mal olor","neutralizar","eliminar olor","odor"] },
+
+    { key:"premium_wood", nombre:"Premium Wood Polish", tipo:"Pulidor de muebles", senal:"atencion",
+      img:"images/products/premium_wood.jpg", sds:"sds/premium_wood.pdf",
+      sirve:["Pule muebles: madera, cuero y vinil","Listo para usar"],
+      noUsa:["No en pisos que se caminan (resbala)","No sobre alimentos"],
+      recordatorio:"Aplicá poca cantidad con paño suave.",
+      epp:["guantes","lentes","zapatos"], noMezclar:"",
+      tareas:["pulir"], sinon:["pulir","brillo","muebles","madera","cuero","vinil","lustrar","premium wood"] }
+  ],
+
+  tareas: [
+    { key:"pisos", emoji:"🧹", label:"Limpiar pisos" },
+    { key:"desinfectar", emoji:"🦠", label:"Desinfectar" },
+    { key:"bano", emoji:"🚽", label:"Limpiar baño" },
+    { key:"vidrio", emoji:"🪟", label:"Limpiar vidrio" },
+    { key:"manchas", emoji:"✨", label:"Quitar manchas" },
+    { key:"olor", emoji:"🌸", label:"Quitar olores" },
+    { key:"alfombra", emoji:"🟫", label:"Limpiar alfombra" },
+    { key:"pulir", emoji:"🪑", label:"Pulir muebles" }
+  ],
+
+  colores: [
+    { color:"#CE3F3F", nombre:"Rojo", usa:"Baños: TODO en rojo — paños, mechas y escobón. Así no se confunde con otras áreas.", noUsa:"Nunca en cafeterías, cocinas ni superficies de alimentos." },
+    { color:"#3E72B0", nombre:"Azul", usa:"Espejos y vidrios. También zonas comunes: oficinas, escritorios y áreas generales.", noUsa:"No usar en baños ni inodoros." },
+    { color:"#4F9E7A", nombre:"Verde", usa:"Cafeterías y cafetines (áreas de alimentos).", noUsa:"No usar en baños." },
+    { color:"#E4B53C", nombre:"Amarillo", usa:"Fluxómetros, llaves, difusores y divisiones.", noUsa:"No en inodoros ni en superficies de alimentos." }
+  ],
+
+  ghs: [
+    { sym:"💀", nombre:"Tóxico", sig:"Puede causar daño grave o muerte.", acc:"No inhalar ni tragar. Usar EPP. Lavarse después." },
+    { sym:"🔥", nombre:"Inflamable", sig:"Puede prenderse fácil.", acc:"Lejos del fuego y el calor. No fumar cerca." },
+    { sym:"⚠️", nombre:"Irritante", sig:"Irrita piel, ojos o vías respiratorias.", acc:"Evitar contacto. Usar guantes y lentes." },
+    { sym:"🧪", nombre:"Corrosivo", sig:"Quema piel, ojos y metales.", acc:"Guantes y lentes siempre. Si cae, lavar mucho." },
+    { sym:"💨", nombre:"Gas a presión", sig:"Envase a presión, puede estallar.", acc:"No perforar ni calentar. Guardar fresco." },
+    { sym:"☣️", nombre:"Peligro salud", sig:"Daño a largo plazo a la salud.", acc:"Minimizar exposición. Seguir la ficha SDS." }
+  ],
+
+  nfpa: [
+    { color:"#3E72B0", letra:"Azul", q:"Salud", sig:"Qué tan dañino es para la persona.", rec:"Más alto el número, más EPP necesitás." },
+    { color:"#CE3F3F", letra:"Rojo", q:"Inflamabilidad", sig:"Qué tan fácil se prende.", rec:"Lejos de chispas, calor y fuego." },
+    { color:"#E4B53C", letra:"Amarillo", q:"Reactividad", sig:"Qué tan inestable es.", rec:"No mezclar ni golpear el envase." },
+    { color:"#FFFFFF", letra:"Blanco", q:"Especial", sig:"Aviso especial (ej. no usar agua).", rec:"Leé el símbolo antes de actuar." }
+  ],
+
+  emergencias: [
+    { key:"ojos", emoji:"👁️", titulo:"Me cayó en los ojos", pasos:["Lavá con agua limpia 15 minutos, ojo abierto.","No te frotés los ojos.","Avisá al supervisor y consultá la SDS."] },
+    { key:"piel", emoji:"🖐️", titulo:"Me cayó en la piel", pasos:["Quitá la ropa mojada con el producto.","Lavá la piel con agua abundante.","Avisá al supervisor y consultá la SDS."] },
+    { key:"inhalo", emoji:"😮‍💨", titulo:"Lo inhalé", pasos:["Salí a tomar aire fresco.","Si no mejorás, buscá ayuda.","Avisá al supervisor y consultá la SDS."] },
+    { key:"ingesta", emoji:"⚠️", titulo:"Lo ingerí", pasos:["No te provoqués vómito.","Enjuagá la boca con agua.","Avisá YA al supervisor y consultá la SDS."] },
+    { key:"derrame", emoji:"💧", titulo:"Derramé un químico", pasos:["Señalizá y mantené a la gente lejos.","Ventilá el área.","Avisá al supervisor antes de limpiar."] }
+  ]
+};
+
+/* ============================================================
+   CAPA DE EVENTOS — preparada para LillyTech Core (Supabase).
+   Hoy guarda en cola local; mañana se envía al Core sin cambiar el resto.
+   ============================================================ */
+const CORE = {
+  url:"https://vgkyoyosjewdygxtnqvu.supabase.co",
+  anon:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZna3lveW9zamV3ZHlneHRucXZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2NTAxNDAsImV4cCI6MjA5ODIyNjE0MH0.oDxSWg61UFLqMh2MeEW6yxarZAjobhEA6TWm0KS_7CA"
+};
+function deviceId(){ let d=localStorage.getItem('gls_device'); if(!d){ d='dev_'+Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('gls_device',d);} return d; }
+function glsUser(){ try{ return JSON.parse(localStorage.getItem('gls_user')||'null'); }catch(_){ return null; } }
+const Track = {
+  event(type, payload){
+    const u = glsUser();
+    const rec = {
+      nombre: u ? u.nombre : '(sin nombre)',
+      proyecto: u ? u.proyecto : '(sin proyecto)',
+      accion: type,
+      detalle: payload || {},
+      device_id: deviceId()
+    };
+    // respaldo local (por si no hay señal)
+    try{ const q=JSON.parse(localStorage.getItem('gls_events')||'[]'); q.push({...rec,ts:new Date().toISOString()}); localStorage.setItem('gls_events', JSON.stringify(q.slice(-200))); }catch(_){}
+    // enviar al LillyTech Core (no bloquea; si falla, queda el respaldo local)
+    try{
+      fetch(CORE.url+'/rest/v1/gls_activity', {
+        method:'POST',
+        headers:{ 'apikey':CORE.anon, 'Authorization':'Bearer '+CORE.anon, 'Content-Type':'application/json', 'Prefer':'return=minimal' },
+        body: JSON.stringify(rec)
+      }).catch(()=>{});
+    }catch(_){}
+  }
+};
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+const screens = ['home','asistente','productos','ficha','etiqueta','ghs','nfpa','colores','emergencias','compat'];
+let navStack = ['home'];
+function show(id){
+  screens.forEach(s=>document.getElementById('s-'+s).classList.toggle('active', s===id));
+  window.scrollTo({top:0,behavior:'instant'});
+  const sub = id!=='home';
+  document.getElementById('topbar').classList.toggle('sub', sub);
+  document.getElementById('topName').textContent = sub ? titleFor(id) : CONFIG.marca.nombre;
+  document.getElementById('topSub').textContent = sub ? 'Guía de Limpieza Segura' : CONFIG.marca.sub;
+}
+function titleFor(id){return {asistente:'No sé cuál usar',productos:'Productos',ficha:'Ficha de producto',etiqueta:'Leer una etiqueta',ghs:'Pictogramas GHS',nfpa:'Rombo NFPA',colores:'Código de colores',emergencias:'Emergencias',compat:'¿Se pueden juntar?'}[id]||'';}
+function go(id){ navStack.push(id); show(id); Track.event('open_module',{module:id}); }
+function back(){ navStack.pop(); const prev = navStack[navStack.length-1]||'home'; show(prev); }
+document.getElementById('backBtn').onclick = back;
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function senalPill(s){ return s==='peligro' ? '<span class="pill peligro">⚠ Peligro</span>' : '<span class="pill atencion">⚠ Atención</span>'; }
+function eppIcon(k){
+  const map={
+    guantes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 11V5a1.5 1.5 0 0 1 3 0v5m0 0V3.5a1.5 1.5 0 0 1 3 0V10m0 0V4.5a1.5 1.5 0 0 1 3 0V12m0-1.5a1.5 1.5 0 0 1 3 0V16a6 6 0 0 1-6 6h-2.5a6 6 0 0 1-5-2.7L3 15a1.6 1.6 0 0 1 2.7-1.7L6 14"/></svg>',
+    lentes:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="14" r="4"/><circle cx="17" cy="14" r="4"/><path d="M11 14h2M2 9l3-4h4M22 9l-3-4h-4"/></svg>',
+    zapatos:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 17h20v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2z"/><path d="M2 17l1.5-9 4 2 2-2 3 4h6.5a3 3 0 0 1 3 3v2"/><path d="M9.5 10.5l1 1"/></svg>'
+  };
+  const lbl={guantes:'Guantes',lentes:'Lentes',zapatos:'Zapatos de seguridad'};
+  return `<div class="e">${map[k]||''}<span>${lbl[k]||k}</span></div>`;
+}
+
+/* ---- Asistente ---- */
+function renderTasks(){
+  document.getElementById('taskGrid').innerHTML = CONFIG.tareas.map(t=>
+    `<button class="task" onclick="pickTask('${t.key}')"><span class="emoji">${t.emoji}</span><span>${t.label}</span></button>`).join('');
+}
+function pickTask(tkey){
+  Track.event('task_pick',{task:tkey});
+  const prod = CONFIG.productos.find(p=>p.tareas && p.tareas.includes(tkey));
+  const tarea = CONFIG.tareas.find(t=>t.key===tkey);
+  const box = document.getElementById('taskResult');
+  if(!prod){
+    box.innerHTML = `<div class="rcard"><div class="rcard-body"><div class="rrow rem"><div class="ric">💡</div><div class="rt"><b>Para esta tarea</b><span>Consultá a tu supervisor o usá el buscador. Aún no hay un producto asignado.</span></div></div></div></div>`;
+    box.scrollIntoView({behavior:'smooth',block:'center'}); return;
+  }
+  box.innerHTML = `
+    <div class="rcard">
+      <div class="rcard-top"><div class="lbl">Para ${tarea.label.toLowerCase()}, usá</div><h3>${prod.nombre}</h3></div>
+      <div class="rcard-body">
+        <div class="rrow ok"><div class="ric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg></div><div class="rt"><b>Sirve para</b><span>${prod.sirve[0]}</span></div></div>
+        <div class="rrow no"><div class="ric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><div class="rt"><b>No se usa para</b><span>${prod.noUsa[0]}</span></div></div>
+        <div class="rrow rem"><div class="ric"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="rt"><b>Recordá</b><span>${prod.recordatorio}</span></div></div>
+        <button class="btn btn-ink" onclick="openFicha('${prod.key}')">Ver ficha del producto</button>
+      </div>
+    </div>`;
+  box.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ---- Productos ---- */
+function renderProducts(){
+  document.getElementById('prodList').innerHTML = CONFIG.productos.map(p=>{
+    const img = p.img ? `<img class="pthumb" src="${p.img}" alt="${p.nombre}" onerror="this.style.visibility='hidden'">` : `<div class="pthumb" style="display:grid;place-items:center;font-size:1.6rem">🧴</div>`;
+    return `<button class="pcard" onclick="openFicha('${p.key}')">
+      ${img}
+      <div class="pmeta"><h3>${p.nombre}</h3><div class="use">${p.tipo}</div>${senalPill(p.senal)}</div>
+      <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </button>`;
+  }).join('');
+}
+
+/* ---- Ficha ---- */
+function openFicha(key){
+  const p = CONFIG.productos.find(x=>x.key===key); if(!p) return;
+  Track.event('open_product',{product:key});
+  const photo = (src,lbl)=> src ? `<div class="fphoto"><img src="${src}" alt="${lbl}" onerror="this.parentNode.innerHTML='<div style=\\'aspect-ratio:1;display:grid;place-items:center;font-size:2rem;background:var(--paper-2);border:1px solid var(--line);border-radius:18px\\'>🧴</div><span>${lbl}</span>'"><span>${lbl}</span></div>`
+    : `<div class="fphoto"><div style="aspect-ratio:1;display:grid;place-items:center;font-size:2rem;background:var(--paper-2);border:1px solid var(--line);border-radius:18px">🧴</div><span>${lbl}</span></div>`;
+  const eppList = (p.epp && p.epp.length) ? p.epp : ['guantes','lentes','zapatos'];
+  const eppHtml = `<div class="fiche-sec"><div class="h" style="color:var(--rust)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Protección obligatoria (siempre)</div><div class="epp">${eppList.map(eppIcon).join('')}</div></div>`;
+  const mezcla = p.noMezclar ? `<div class="fiche-sec"><div class="danger-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><b>Nunca mezclar con ${p.noMezclar}.</b><br><span style="font-size:.92rem;color:var(--tx)">Puede generar gases tóxicos.</span></div></div></div>` : '';
+  document.getElementById('ficheBody').innerHTML = `
+    <div class="fiche-hero">
+      <div class="fiche-photos">${photo(p.img,'Concentrado')}${photo(p.img,'Listo para usar')}</div>
+      <h2>${p.nombre}</h2>
+      <div class="sig">${senalPill(p.senal)}</div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h">Datos de seguridad</div>
+      <div class="chips">
+        <span class="chip">pH ${SAFETY[p.key]?SAFETY[p.key].ph:'—'}</span>
+        <span class="chip" style="${SAFETY[p.key]&&SAFETY[p.key].corrosivo?'color:var(--rust)':''}">${SAFETY[p.key]&&SAFETY[p.key].corrosivo?'⚠ Corrosivo':'No corrosivo'}</span>
+        <span class="chip">Grupo: ${SAFETY[p.key]?SAFETY[p.key].grupo:'—'}</span>
+      </div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h" style="color:var(--sage)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>Sirve para</div>
+      <div class="chips">${p.sirve.map(s=>`<span class="chip">✓ ${s}</span>`).join('')}</div>
+    </div>
+    <div class="fiche-sec">
+      <div class="h" style="color:var(--rust)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No se usa para</div>
+      <div class="chips">${p.noUsa.map(s=>`<span class="chip" style="color:var(--rust)">✕ ${s}</span>`).join('')}</div>
+    </div>
+    ${mezcla}
+    ${eppHtml}
+    <div class="fiche-sec">
+      <div class="danger-box" style="background:var(--amber-soft);border-color:#EAD2A8"><svg viewBox="0 0 24 24" stroke="var(--amber)" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div style="color:#8a5a14"><b style="color:#8a5a14">Recordá:</b> ${p.recordatorio}</div></div>
+    </div>
+    <div class="fiche-actions">
+      <a class="btn btn-ink" href="${p.sds}" target="_blank" rel="noopener" onclick="Track.event('open_sds',{product:'${p.key}'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Ver SDS (ficha de seguridad)</a>
+      <button class="btn btn-out" onclick="openCompat('${p.key}')">⚗️ ¿Se puede juntar con otro?</button>
+      <div class="btn-row">
+        <button class="btn btn-out" onclick="openSheet('duda','${p.key}')">🙋 Tengo una duda</button>
+        <button class="btn btn-out" onclick="openSheet('ayudo','${p.key}')">👍 ¿Me ayudó?</button>
+      </div>
+    </div>`;
+  navStack.push('ficha'); show('ficha');
+}
+
+/* ---- Etiqueta ---- */
+const labelExpls = {
+  nombre:{t:"Nombre del producto",d:"Siempre el nombre correcto. Nunca 'la botella verde' ni 'la del baño'. El nombre te dice exactamente qué es."},
+  fab:{t:"Fabricante",d:"Quién lo hizo. Sirve para saber a quién consultar y confirmar que es un producto original."},
+  picto:{t:"Pictogramas",d:"Los rombos rojos avisan el peligro: corrosivo, irritante, inflamable… Míralos antes de usar el producto."},
+  instr:{t:"Instrucciones de uso",d:"Cómo usar el producto y con qué NO mezclarlo. Si lo usás mal, no limpia o se vuelve peligroso."},
+  epp:{t:"Equipo de protección",d:"Lo que tenés que ponerte: guantes, lentes. Te protege de salpicaduras y vapores."},
+  emerg:{t:"Número de emergencia",d:"A quién llamar si algo sale mal. Tenelo a mano siempre que uses el producto."}
+};
+function expl(k){
+  const e=labelExpls[k]; const box=document.getElementById('labelExpl');
+  box.innerHTML=`<b>${e.t}</b>${e.d}`; box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'center'});
+  Track.event('label_part',{part:k});
+}
+const labelGames=[
+  {falta:"Le falta el NOMBRE del producto.",img:"❓🧴"},
+  {falta:"Le faltan los PICTOGRAMAS de peligro.",img:"🧴"},
+  {falta:"Le falta el NÚMERO de emergencia.",img:"🧴☎️"},
+  {falta:"La etiqueta está DAÑADA y no se lee.",img:"🩹🧴"},
+  {falta:"La botella NO tiene etiqueta. ¡Nunca la uses!",img:"🚫🧴"}
+];
+let lg=0;
+function renderLabelGame(){
+  const g=labelGames[lg];
+  document.getElementById('labelGame').innerHTML=`
+    <div class="quiz">
+      <div style="font-size:3rem;text-align:center;margin-bottom:10px">${g.img}</div>
+      <h4 style="text-align:center">¿Qué le falta a esta etiqueta?</h4>
+      <button class="btn btn-out" onclick="revealLabel()">Ver respuesta</button>
+      <div id="lgAns" style="display:none;margin-top:12px" class="expl show"><b>Respuesta</b>${g.falta}</div>
+      <button class="btn btn-ink" style="margin-top:12px" onclick="nextLabel()">Siguiente etiqueta →</button>
+    </div>`;
+}
+function revealLabel(){document.getElementById('lgAns').style.display='block';Track.event('label_game_answer',{i:lg});}
+function nextLabel(){lg=(lg+1)%labelGames.length;renderLabelGame();}
+
+/* ---- GHS ---- */
+function flipCard(el){ el.classList.toggle('flipped'); }
+function renderGHS(){
+  document.getElementById('ghsGrid').innerHTML = CONFIG.ghs.map(g=>`
+    <div class="flip" onclick="flipCard(this)">
+      <div class="flip-in">
+        <div class="flip-face flip-front"><div class="gsym">${g.sym}</div><b>${g.nombre}</b><span class="hintf">tocá ↻</span></div>
+        <div class="flip-face flip-back"><b>${g.nombre}</b><p>${g.sig}</p><p style="color:var(--brass-soft);font-weight:600">${g.acc}</p><span class="hintf">tocá ↻</span></div>
+      </div>
+    </div>`).join('');
+  // quiz: solo símbolos, hay que reconocer el pictograma (sin la palabra)
+  const retos=[
+    {preg:"¿Cuál avisa de INFLAMABLE?",ok:"🔥"},
+    {preg:"¿Cuál avisa de CORROSIVO?",ok:"🧪"},
+    {preg:"¿Cuál avisa de TÓXICO?",ok:"💀"}
+  ];
+  const r=retos[Math.floor(Math.random()*retos.length)];
+  const simbolos=["🔥","🧪","💀","⚠️","💨","☣️"].sort(()=>Math.random()-.5).slice(0,4);
+  if(!simbolos.includes(r.ok)) simbolos[0]=r.ok;
+  simbolos.sort(()=>Math.random()-.5);
+  document.getElementById('ghsQuiz').innerHTML = `<h4>${r.preg}</h4><div class="quiz-opts" style="grid-template-columns:1fr 1fr">${simbolos.map(s=>`<button class="qopt" style="font-size:2rem;text-align:center;padding:18px" data-ok="${s===r.ok?1:0}" onclick="answerGHS(this)">${s}</button>`).join('')}</div>`;
+}
+function answerGHS(el){
+  const ok = el.getAttribute('data-ok')==='1';
+  el.classList.add(ok?'correct':'wrong');
+  if(!ok){ document.querySelectorAll('#ghsQuiz .qopt').forEach(b=>{ if(b.getAttribute('data-ok')==='1') b.classList.add('correct'); }); }
+  Track.event('ghs_quiz',{correct:ok});
+}
+
+/* ---- NFPA ---- */
+function renderNFPA(){
+  document.getElementById('nfpaGrid').innerHTML = CONFIG.nfpa.map(n=>`
+    <div class="flip" onclick="flipCard(this)">
+      <div class="flip-in">
+        <div class="flip-face flip-front" style="background:${n.color};${n.color==='#FFFFFF'?'border:2px solid var(--ink)':''}">
+          <b style="color:${n.color==='#FFFFFF'||n.color==='#E4B53C'?'#191F2E':'#fff'};font-size:1.3rem">${n.letra}</b>
+          <span style="color:${n.color==='#FFFFFF'||n.color==='#E4B53C'?'#5C6478':'rgba(255,255,255,.85)'};font-size:.9rem;margin-top:4px">${n.q}</span>
+          <span class="hintf" style="color:${n.color==='#FFFFFF'||n.color==='#E4B53C'?'#9098A8':'rgba(255,255,255,.6)'}">tocá ↻</span>
+        </div>
+        <div class="flip-face flip-back"><b>${n.letra} · ${n.q}</b><p>${n.sig}</p><p style="color:var(--brass-soft);font-weight:600">${n.rec}</p><span class="hintf">tocá ↻</span></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ---- Colores ---- */
+function renderColors(){
+  document.getElementById('colorList').innerHTML = CONFIG.colores.map(c=>`
+    <div class="color-card">
+      <div class="color-bar" style="background:${c.color}"></div>
+      <div class="color-in">
+        <h3><span class="dot" style="background:${c.color}"></span>${c.nombre}</h3>
+        <div class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg><span>${c.usa}</span></div>
+        <div class="nope"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>${c.noUsa}</span></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ---- Emergencias ---- */
+function renderEmg(){
+  document.getElementById('emgList').innerHTML = CONFIG.emergencias.map(e=>`
+    <button class="emg" onclick="openEmg('${e.key}')"><span class="ee">${e.emoji}</span><b>${e.titulo}</b><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></span></button>`).join('');
+  document.getElementById('emgDetail').innerHTML='';
+}
+function openEmg(key){
+  const e=CONFIG.emergencias.find(x=>x.key===key); Track.event('emergency',{type:key});
+  document.getElementById('emgList').innerHTML='';
+  document.getElementById('emgDetail').innerHTML=`
+    <div class="shead"><h2>${e.emoji} ${e.titulo}</h2><p>Seguí estos pasos.</p></div>
+    <div class="steps3">${e.pasos.map((p,i)=>`<div class="step3"><div class="n">${i+1}</div><p>${p}</p></div>`).join('')}</div>
+    <div class="pad" style="display:grid;gap:11px">
+      <a class="btn btn-ink" href="https://wa.me/${CONFIG.supervisorWA}?text=${encodeURIComponent('Emergencia con un químico: '+e.titulo+'. Necesito apoyo.')}" target="_blank" rel="noopener">📣 Avisar al supervisor</a>
+      <button class="btn btn-out" onclick="go('productos')">📄 Consultar SDS</button>
+      <button class="btn btn-out" onclick="renderEmg()">← Ver otras emergencias</button>
+    </div>`;
+  window.scrollTo({top:0});
+}
+
+/* ============================================================
+   BUSCADOR con sinónimos
+   ============================================================ */
+function searchProducts(q){
+  q=q.trim().toLowerCase();
+  if(!q) return [];
+  return CONFIG.productos.map(p=>{
+    let score=0;
+    if(p.nombre.toLowerCase().includes(q)) score+=5;
+    if(p.tipo.toLowerCase().includes(q)) score+=3;
+    (p.sinon||[]).forEach(s=>{ if(s.includes(q)||q.includes(s)) score+=4; });
+    (p.tareas||[]).forEach(t=>{ const tk=CONFIG.tareas.find(x=>x.key===t); if(tk&&tk.label.toLowerCase().includes(q)) score+=2; });
+    return {p,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5).map(x=>x.p);
+}
+const searchInput=document.getElementById('searchInput');
+const suggestBox=document.getElementById('suggest');
+searchInput.addEventListener('input',()=>{
+  const res=searchProducts(searchInput.value);
+  if(!res.length){ suggestBox.classList.remove('show'); suggestBox.innerHTML=''; return; }
+  suggestBox.innerHTML=res.map(p=>{
+    const img=p.img?`<img class="sug-thumb" src="${p.img}" onerror="this.style.visibility='hidden'">`:`<div class="sug-thumb" style="display:grid;place-items:center">🧴</div>`;
+    return `<div class="sug-item" onclick="openFicha('${p.key}');clearSearch()">${img}<div><b>${p.nombre}</b><small>${p.tipo}</small></div></div>`;
+  }).join('');
+  suggestBox.classList.add('show');
+  Track.event('search',{q:searchInput.value});
+});
+function clearSearch(){ searchInput.value=''; suggestBox.classList.remove('show'); suggestBox.innerHTML=''; }
+
+/* ============================================================
+   SHEET: Tengo una duda / ¿Me ayudó?
+   ============================================================ */
+function openSheet(kind,prodKey){
+  const c=document.getElementById('sheetContent');
+  if(kind==='duda'){
+    c.innerHTML=`
+      <div class="sheet-h"><h3>Tengo una duda</h3><button class="sheet-x" onclick="closeSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <p style="color:var(--tx-soft)">Escribí tu consulta. Tu supervisor te responde.</p>
+      <div class="field"><label>Nombre</label><input id="dNombre" placeholder="Tu nombre"></div>
+      <div class="field"><label>Proyecto / Área</label><input id="dProy" placeholder="Dónde trabajás"></div>
+      <div class="field"><label>Tema</label>
+        <select id="dTema"><option>Producto</option><option>Dilución</option><option>Código de colores</option><option>Emergencia</option><option>Otro</option></select></div>
+      <div class="field"><label>Tu consulta</label><textarea id="dMsg" placeholder="Escribí aquí…">${prodKey?('Consulta sobre: '+(CONFIG.productos.find(p=>p.key===prodKey)||{}).nombre):''}</textarea></div>
+      <div class="photo-drop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Adjuntar fotografía (próximamente)</div>
+      <button class="btn btn-ink" style="margin-top:16px" onclick="submitDuda()">Enviar consulta</button>
+      <p style="text-align:center;color:var(--tx-faint);font-size:.8rem;margin-top:10px">Tu consulta queda registrada para LillyTech Core.</p>`;
+  } else {
+    c.innerHTML=`
+      <div class="sheet-h"><h3>¿Te ayudó?</h3><button class="sheet-x" onclick="closeSheet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+      <div class="helpful" style="margin:8px 0 0">
+        <p>¿Esta información te sirvió?</p>
+        <div class="help-btns">
+          <button onclick="vote(this,'si','${prodKey||''}')">👍</button>
+          <button onclick="vote(this,'no','${prodKey||''}')">👎</button>
+        </div>
+        <div class="help-thanks" id="helpThanks">¡Gracias por tu respuesta! 🙌</div>
+      </div>`;
+  }
+  document.getElementById('sheetBg').classList.add('show');
+}
+function closeSheet(){ document.getElementById('sheetBg').classList.remove('show'); }
+function submitDuda(){
+  const g=id=>(document.getElementById(id)||{}).value||'';
+  Track.event('duda',{nombre:g('dNombre'),proyecto:g('dProy'),tema:g('dTema'),msg:g('dMsg')});
+  closeSheet(); toast('Consulta registrada. ¡Gracias!');
+}
+function vote(el,v,prodKey){
+  el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('helpThanks').classList.add('show');
+  Track.event('helpful',{value:v,product:prodKey});
+  setTimeout(closeSheet,1100);
+}
+
+/* ---- Toast ---- */
+let toastT;
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
+
+
+/* ============================================================
+   SEGURIDAD Y COMPATIBILIDAD — datos reales (pH, corrosividad, matriz)
+   ============================================================ */
+const SAFETY = {
+  sc200:{ph:'13', corrosivo:true,  grupo:'Alcalino fuerte'},
+  profect256:{ph:'12', corrosivo:true, grupo:'Desinfectante'},
+  nabc:{ph:'5–6', corrosivo:true, grupo:'Desinfectante de baño'},
+  tribase:{ph:'8.5–9.5', corrosivo:false, grupo:'Alcalino leve'},
+  bonnet:{ph:'8–9', corrosivo:false, grupo:'Alcalino leve'},
+  sparcreme:{ph:'8–9', corrosivo:false, grupo:'Alcalino leve'},
+  peroxy:{ph:'2–3', corrosivo:false, grupo:'Ácido'},
+  sparcling:{ph:'7', corrosivo:false, grupo:'Neutro'},
+  airlift_tropical:{ph:'7', corrosivo:false, grupo:'Neutro'},
+  airlift_odor:{ph:'7', corrosivo:false, grupo:'Neutro'},
+  premium_wood:{ph:'7.2–7.8', corrosivo:false, grupo:'Neutro'}
+};
+// Pares incompatibles (rojo) y de precaución (amarillo), de tu matriz real
+const COMPAT_RED = [
+  ['peroxy','profect256'],['peroxy','nabc'],
+  ['sparcling','sc200'],['sparcling','tribase'],['sparcling','profect256'],['sparcling','nabc'],
+  ['sparcreme','sc200'],['sparcreme','tribase'],['sparcreme','profect256'],['sparcreme','nabc']
+];
+const COMPAT_YELLOW = [
+  ['peroxy','sc200'],['peroxy','tribase'],['peroxy','bonnet'],['peroxy','sparcling'],['peroxy','sparcreme'],['peroxy','premium_wood']
+];
+function pairKey(a,b){return [a,b].sort().join('|');}
+const REDSET=new Set(COMPAT_RED.map(p=>pairKey(p[0],p[1])));
+const YELSET=new Set(COMPAT_YELLOW.map(p=>pairKey(p[0],p[1])));
+function compatLevel(a,b){ if(a===b) return 'verde'; const k=pairKey(a,b); if(REDSET.has(k))return 'rojo'; if(YELSET.has(k))return 'amarillo'; return 'verde'; }
+
+function renderCompat(){
+  const opts = CONFIG.productos.map(p=>`<option value="${p.key}">${p.nombre}</option>`).join('');
+  const cA=document.getElementById('cA'), cB=document.getElementById('cB');
+  cA.innerHTML=opts; cB.innerHTML=opts; if(cB.options.length>1) cB.selectedIndex=1;
+  document.getElementById('compatResult').innerHTML='';
+}
+function openCompat(prodKey){
+  go('compat'); renderCompat();
+  if(prodKey){ document.getElementById('cA').value=prodKey; }
+}
+function checkCompat(){
+  const a=document.getElementById('cA').value, b=document.getElementById('cB').value;
+  const lvl=compatLevel(a,b);
+  const pa=CONFIG.productos.find(p=>p.key===a), pb=CONFIG.productos.find(p=>p.key===b);
+  Track.event('compat_check',{a,b,level:lvl});
+  const data={
+    verde:{c:'var(--sage)',bg:'var(--sage-soft)',ic:'✅',t:'Se pueden juntar',m:'No hay incompatibilidad conocida entre estos dos. Aun así, guardalos en sus envases originales y bien cerrados.'},
+    amarillo:{c:'#A86A1C',bg:'var(--amber-soft)',ic:'⚠️',t:'Con precaución: separados',m:'Se pueden guardar en la misma área, pero separados por distancia. No los mezclés ni los dejés juntos.'},
+    rojo:{c:'var(--rust)',bg:'var(--rust-soft)',ic:'⛔',t:'NO: incompatibles',m:'Guardalos por separado y nunca los mezclés. Juntos pueden reaccionar y liberar gases peligrosos.'}
+  }[lvl];
+  document.getElementById('compatResult').innerHTML=`
+    <div style="background:${data.bg};border-radius:18px;padding:22px;text-align:center">
+      <div style="font-size:3rem;line-height:1">${data.ic}</div>
+      <h3 style="color:${data.c};margin:8px 0 4px;font-size:1.4rem">${data.t}</h3>
+      <p style="color:var(--tx);font-weight:500">${pa.nombre} + ${pb.nombre}</p>
+      <p style="color:var(--tx-soft);margin-top:10px;font-size:.96rem">${data.m}</p>
+    </div>`;
+  document.getElementById('compatResult').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('topName').textContent=CONFIG.marca.nombre;
+document.getElementById('topSub').textContent=CONFIG.marca.sub;
+document.getElementById('topSeal').textContent=CONFIG.marca.sello;
+renderTasks(); renderProducts(); renderGHS(); renderNFPA(); renderColors(); renderEmg(); renderLabelGame(); renderCompat();
+
+function enterApp(){
+  const nombre=(document.getElementById('gNombre').value||'').trim();
+  const proyecto=(document.getElementById('gProyecto').value||'').trim();
+  if(nombre.length<2 || proyecto.length<2){ document.getElementById('gateErr').classList.add('show'); return; }
+  localStorage.setItem('gls_user', JSON.stringify({nombre,proyecto}));
+  document.getElementById('gate').classList.add('hide');
+  Track.event('app_open',{});
+}
+// Si ya se identificó antes en este aparato, no volver a preguntar
+(function(){
+  const u=glsUser();
+  if(u && u.nombre){ document.getElementById('gate').classList.add('hide'); Track.event('app_open',{}); }
+})();
+</script>
+</body>
+</html>
