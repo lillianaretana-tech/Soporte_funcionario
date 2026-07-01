@@ -385,6 +385,52 @@ img{display:block;max-width:100%}
 .tag-dil{background:var(--sage-soft);color:var(--sage)}
 .nfpa-note.green{background:var(--sage-soft);border-color:#BFE0CD;color:#2f6b50}
 .nfpa-note.green svg{color:var(--sage)}
+
+/* ===== Motor de auditorías ===== */
+.insp-intro{display:flex;gap:11px;align-items:flex-start;background:var(--sage-soft,#DBEDE3);border:1px solid #BFE0CD;border-radius:14px;padding:14px 16px;margin:0 0 16px;font-size:.94rem;color:#2f6b50}
+.insp-intro svg{width:22px;height:22px;color:var(--sage,#4F9E7A);flex:none;margin-top:2px}
+.insp-check-head{display:flex;flex-direction:column;gap:2px}
+.insp-back{align-self:flex-start;background:none;border:none;color:var(--brass-deep,#A07E2E);font-weight:600;font-size:.9rem;cursor:pointer;padding:4px 0;font-family:inherit}
+.insp-score{background:var(--paper-2,#fff);border:1px solid var(--line,#E2DCCD);border-radius:16px;padding:18px;text-align:center;margin-bottom:16px}
+.insp-pct{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:700;line-height:1;color:var(--ink,#0E1220)}
+.insp-pct.verde{color:#2f9b73}.insp-pct.amarillo{color:#C79A2E}.insp-pct.rojo{color:#C2503A}.insp-pct.neutro{color:#8A91A2}
+.insp-bar{height:9px;border-radius:99px;background:var(--paper-3,#EFEADF);overflow:hidden;margin:12px 0}
+.insp-bar i{display:block;height:100%;background:linear-gradient(90deg,#7fc9a8,var(--sage,#4F9E7A));border-radius:99px;transition:width .35s ease}
+.insp-estado{font-weight:600;font-size:.98rem;margin-bottom:8px}
+.insp-counts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:.82rem;font-weight:600}
+.insp-counts span{background:var(--paper-3,#EFEADF);border-radius:999px;padding:4px 11px}
+.insp-counts .c-ok{color:#2f9b73}.insp-counts .c-no{color:#C2503A}.insp-counts .c-na{color:#5A6275}.insp-counts .c-tot{color:var(--ink,#0E1220)}
+.insp-datos{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.insp-field{display:flex;flex-direction:column;gap:5px}
+.insp-field label{font-size:.78rem;font-weight:600;color:var(--tx-soft,#5A6275)}
+.insp-field input,.insp-field textarea,.req-obs{border:1px solid var(--line,#E2DCCD);border-radius:11px;padding:11px 13px;font-family:inherit;font-size:.95rem;background:var(--paper-2,#fff);color:var(--tx,#191F2E);width:100%;resize:vertical}
+.insp-field textarea{min-height:64px}
+.insp-field input:focus,.insp-field textarea:focus,.req-obs:focus{outline:none;border-color:var(--brass,#C39A45)}
+.req-list{display:grid;gap:12px}
+.req-card{background:var(--paper-2,#fff);border:1px solid var(--line,#E2DCCD);border-radius:15px;padding:15px;border-left:4px solid var(--line,#E2DCCD)}
+.req-card.r-cumple{border-left-color:#4F9E7A}.req-card.r-nocumple{border-left-color:#C2503A}.req-card.r-na{border-left-color:#9098A8}
+.req-top{display:flex;gap:10px;align-items:baseline;margin-bottom:11px}
+.req-code{font-family:'Fraunces',serif;font-weight:700;color:var(--brass-deep,#A07E2E);font-size:1rem;min-width:34px}
+.req-desc{font-weight:600;color:var(--ink,#0E1220);font-size:1rem;line-height:1.3}
+.res-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.res-btn{border:1.5px solid var(--line,#E2DCCD);background:var(--paper-2,#fff);border-radius:10px;padding:10px 6px;font-family:inherit;font-weight:600;font-size:.88rem;cursor:pointer;color:var(--tx-soft,#5A6275);transition:all .13s}
+.res-btn.ok.sel{background:#4F9E7A;border-color:#4F9E7A;color:#fff}
+.res-btn.no.sel{background:#C2503A;border-color:#C2503A;color:#fff}
+.res-btn.na.sel{background:#6B7280;border-color:#6B7280;color:#fff}
+.req-obs{min-height:44px;margin-bottom:10px}
+.req-photo{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.req-photo-btn{display:inline-flex;align-items:center;gap:7px;background:var(--paper-3,#EFEADF);border:1px solid var(--line,#E2DCCD);border-radius:10px;padding:8px 13px;font-size:.86rem;font-weight:600;color:var(--tx,#191F2E);cursor:pointer}
+.req-photo-btn svg{width:16px;height:16px}
+.req-photo-tag{font-size:.8rem;color:var(--tx-soft,#5A6275)}
+.insp-actions{display:grid;gap:12px;margin-top:18px}
+.sum-card{background:var(--paper-2,#fff);border:1px solid var(--line,#E2DCCD);border-radius:15px;padding:6px 16px;margin-bottom:14px}
+.sum-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line,#E2DCCD);font-size:.95rem}
+.sum-row:last-child{border-bottom:none}
+.sum-row span{color:var(--tx-soft,#5A6275)}.sum-row b{color:var(--ink,#0E1220);text-align:right}
+.sum-obsgen,.sum-incumple{background:var(--paper-2,#fff);border:1px solid var(--line,#E2DCCD);border-radius:14px;padding:14px 16px;margin-bottom:14px}
+.sum-obsgen .h,.sum-incumple .h{font-weight:700;color:var(--ink,#0E1220);margin-bottom:8px;font-size:.9rem}
+.sum-inc{color:#C2503A;font-size:.92rem;padding:4px 0}
+.sum-ok{color:#2f9b73;font-weight:600;text-align:center;padding:14px;background:var(--sage-soft,#DBEDE3);border-radius:12px;margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -441,9 +487,9 @@ img{display:block;max-width:100%}
         <h3>Productos</h3><p>Ficha de cada uno.</p>
       </button>
 
-      <button class="mod" onclick="go('etiqueta')">
+      <button class="mod" onclick="openInspection()">
         <div class="m-ic tint-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
-        <h3>Leer una etiqueta</h3><p>Tocá y aprendé.</p>
+        <h3>Auditoría de etiqueta</h3><p>Inspección paso a paso.</p>
       </button>
 
       <button class="mod" onclick="go('ghs')">
@@ -494,31 +540,7 @@ img{display:block;max-width:100%}
 
   <!-- ===================== ETIQUETA ===================== -->
   <div class="screen" id="s-etiqueta">
-    <div class="shead"><h2>Leé una etiqueta</h2><p>Tocá cada parte subrayada para entenderla.</p></div>
-    <div class="label-demo">
-      <div class="label-band"><span class="lname hot" onclick="expl('nombre')">PROFECT 256</span><span style="font-size:.8rem;opacity:.8">LillyTech</span></div>
-      <div class="label-body">
-        <div class="label-row">
-          <span class="hot" onclick="expl('fab')">Fabricado por: LillyTech Labs</span>
-        </div>
-        <div class="label-row">
-          <div class="label-pictos">
-            <div class="lpicto" onclick="expl('picto')"><span>⚠️</span></div>
-            <div class="lpicto" onclick="expl('picto')"><span>🧪</span></div>
-          </div>
-          <span class="hot" onclick="expl('instr')">Instrucciones de uso · No mezclar con ácidos</span>
-        </div>
-        <div class="label-row">
-          <span class="hot" onclick="expl('epp')">🧤 Usar guantes y lentes</span>
-        </div>
-        <div class="label-row">
-          <span class="hot" onclick="expl('emerg')">☎️ Emergencias: 2222-0000</span>
-        </div>
-      </div>
-    </div>
-    <div class="expl" id="labelExpl"></div>
-    <div class="shead" style="padding-top:10px"><h2>Juego: ¿qué le falta?</h2><p>Mirá la etiqueta y detectá el error.</p></div>
-    <div id="labelGame"></div>
+    <div id="inspRoot"></div>
   </div>
 
   <!-- ===================== GHS ===================== -->
@@ -771,7 +793,7 @@ function show(id){
   document.getElementById('topName').textContent = sub ? titleFor(id) : CONFIG.marca.nombre;
   document.getElementById('topSub').textContent = sub ? 'Guía de Limpieza Segura' : CONFIG.marca.sub;
 }
-function titleFor(id){return {asistente:'No sé cuál usar',productos:'Productos',ficha:'Ficha de producto',etiqueta:'Leer una etiqueta',ghs:'Pictogramas GHS',nfpa:'Rombo NFPA',colores:'Código de colores',emergencias:'Emergencias',compat:'¿Se pueden juntar?'}[id]||'';}
+function titleFor(id){return {asistente:'No sé cuál usar',productos:'Productos',ficha:'Ficha de producto',etiqueta:'Auditoría de etiqueta',ghs:'Pictogramas GHS',nfpa:'Rombo NFPA',colores:'Código de colores',emergencias:'Emergencias',compat:'¿Se pueden juntar?'}[id]||'';}
 function go(id){ navStack.push(id); show(id); Track.event('open_module',{module:id}); }
 function back(){ navStack.pop(); const prev = navStack[navStack.length-1]||'home'; show(prev); }
 document.getElementById('backBtn').onclick = back;
@@ -942,40 +964,6 @@ function openFicha(key){
 }
 
 /* ---- Etiqueta ---- */
-const labelExpls = {
-  nombre:{t:"Nombre del producto",d:"Siempre el nombre correcto. Nunca 'la botella verde' ni 'la del baño'. El nombre te dice exactamente qué es."},
-  fab:{t:"Fabricante",d:"Quién lo hizo. Sirve para saber a quién consultar y confirmar que es un producto original."},
-  picto:{t:"Pictogramas",d:"Los rombos rojos avisan el peligro: corrosivo, irritante, inflamable… Míralos antes de usar el producto."},
-  instr:{t:"Instrucciones de uso",d:"Cómo usar el producto y con qué NO mezclarlo. Si lo usás mal, no limpia o se vuelve peligroso."},
-  epp:{t:"Equipo de protección",d:"Lo que tenés que ponerte: guantes, lentes. Te protege de salpicaduras y vapores."},
-  emerg:{t:"Número de emergencia",d:"A quién llamar si algo sale mal. Tenelo a mano siempre que uses el producto."}
-};
-function expl(k){
-  const e=labelExpls[k]; const box=document.getElementById('labelExpl');
-  box.innerHTML=`<b>${e.t}</b>${e.d}`; box.classList.add('show'); box.scrollIntoView({behavior:'smooth',block:'center'});
-  Track.event('label_part',{part:k});
-}
-const labelGames=[
-  {falta:"Le falta el NOMBRE del producto.",img:"❓🧴"},
-  {falta:"Le faltan los PICTOGRAMAS de peligro.",img:"🧴"},
-  {falta:"Le falta el NÚMERO de emergencia.",img:"🧴☎️"},
-  {falta:"La etiqueta está DAÑADA y no se lee.",img:"🩹🧴"},
-  {falta:"La botella NO tiene etiqueta. ¡Nunca la uses!",img:"🚫🧴"}
-];
-let lg=0;
-function renderLabelGame(){
-  const g=labelGames[lg];
-  document.getElementById('labelGame').innerHTML=`
-    <div class="quiz">
-      <div style="font-size:3rem;text-align:center;margin-bottom:10px">${g.img}</div>
-      <h4 style="text-align:center">¿Qué le falta a esta etiqueta?</h4>
-      <button class="btn btn-out" onclick="revealLabel()">Ver respuesta</button>
-      <div id="lgAns" style="display:none;margin-top:12px" class="expl show"><b>Respuesta</b>${g.falta}</div>
-      <button class="btn btn-ink" style="margin-top:12px" onclick="nextLabel()">Siguiente etiqueta →</button>
-    </div>`;
-}
-function revealLabel(){document.getElementById('lgAns').style.display='block';Track.event('label_game_answer',{i:lg});}
-function nextLabel(){lg=(lg+1)%labelGames.length;renderLabelGame();}
 
 /* ---- GHS ---- */
 function flipCard(el){ el.classList.toggle('flipped'); }
@@ -1199,7 +1187,361 @@ function checkCompat(){
 document.getElementById('topName').textContent=CONFIG.marca.nombre;
 document.getElementById('topSub').textContent=CONFIG.marca.sub;
 document.getElementById('topSeal').textContent=CONFIG.marca.sello;
-renderTasks(); renderProducts(); renderGHS(); renderNFPA(); renderColors(); renderEmg(); renderLabelGame(); renderCompat();
+
+/* ============================================================
+   MOTOR DE AUDITORÍAS — LillyTech
+   Primer módulo: Auditoría de etiqueta.
+   Reutiliza CONFIG.productos, Track.event() y el patrón Supabase (CORE).
+   Diseñado para crecer: agregar una plantilla nueva a INSPECTION_TEMPLATES
+   habilita otro tipo de auditoría (SDS, cuartos químicos, EPP, etc.).
+   ============================================================ */
+
+/* --- Plantillas de auditoría (config, fuente de la UI) --- */
+const INSPECTION_TEMPLATES = {
+  etiqueta: {
+    id: 'etiqueta',
+    nombre: 'Auditoría de etiqueta',
+    descripcion: 'Inspección de la etiqueta del producto químico higiénico según requisitos.',
+    requisitos: [
+      { codigo:'6.1',  descripcion:'Nombre comercial del producto' },
+      { codigo:'6.2',  descripcion:'Registro sanitario' },
+      { codigo:'6.3',  descripcion:'Tipo de producto' },
+      { codigo:'6.4',  descripcion:'Titular' },
+      { codigo:'6.5',  descripcion:'Importador' },
+      { codigo:'6.6',  descripcion:'Ingredientes' },
+      { codigo:'6.7',  descripcion:'Contenido neto' },
+      { codigo:'6.8',  descripcion:'Instrucciones' },
+      { codigo:'6.9',  descripcion:'Advertencias' },
+      { codigo:'6.10', descripcion:'Riesgos' },
+      { codigo:'6.11', descripcion:'Primeros auxilios' },
+      { codigo:'6.12', descripcion:'Antídoto' },
+      { codigo:'6.13', descripcion:'Manténgase fuera del alcance de los niños' },
+      { codigo:'6.14', descripcion:'Teléfono intoxicaciones' },
+      { codigo:'6.15', descripcion:'Pictogramas' },
+      { codigo:'6.16', descripcion:'Número de lote' },
+      { codigo:'LEG',  descripcion:'Etiqueta legible y en español' }
+    ]
+  }
+};
+
+/* --- Estado de la auditoría en curso --- */
+let inspView = 'pick';           // 'pick' | 'check' | 'summary'
+let inspState = null;
+function inspUUID(){ try{ return crypto.randomUUID(); }catch(_){ return 'insp_'+Date.now().toString(36)+Math.random().toString(36).slice(2); } }
+function inspEsc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* --- Entrada al módulo (desde el home) --- */
+function openInspection(){ inspView='pick'; inspState=null; go('etiqueta'); renderInspectionModule(); }
+
+/* --- Router del módulo: decide qué vista mostrar --- */
+function renderInspectionModule(){
+  const root = document.getElementById('inspRoot'); if(!root) return;
+  if(inspView==='check' && inspState)      root.innerHTML = renderInspectionRequirements();
+  else if(inspView==='summary' && inspState) root.innerHTML = renderInspectionSummary();
+  else root.innerHTML = renderInspectionPicker();
+}
+
+/* --- Vista 1: elegir producto a auditar --- */
+function renderInspectionPicker(){
+  const tpl = INSPECTION_TEMPLATES.etiqueta;
+  const cards = CONFIG.productos.map(p=>`
+    <button class="pcard" onclick="startInspection('${p.key}')">
+      <img src="${p.img}" alt="" onerror="this.style.display='none'">
+      <div class="pcard-info"><b>${inspEsc(p.nombre)}</b><small>${inspEsc(p.tipo)}</small></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`).join('');
+  return `
+    <div class="shead"><h2>${tpl.nombre}</h2><p>Elegí el producto que vas a inspeccionar.</p></div>
+    <div class="insp-intro">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span>Revisá cada requisito de la etiqueta, marcá si cumple, agregá observaciones y foto, y al final obtenés el resultado con su porcentaje.</span>
+    </div>
+    <div class="plist">${cards}</div>`;
+}
+
+/* --- Arrancar una inspección para un producto --- */
+function startInspection(key){
+  const p = CONFIG.productos.find(x=>x.key===key); if(!p) return;
+  const tpl = INSPECTION_TEMPLATES.etiqueta;
+  const u = glsUser() || {};
+  inspState = {
+    id: inspUUID(),
+    templateId: tpl.id,
+    producto: { key:p.key, nombre:p.nombre },
+    cliente: '', edificio: '',
+    proyecto: u.proyecto || '',
+    inspector: u.nombre || '',
+    results: {},
+    obsGenerales: '',
+    startedAt: new Date().toISOString()
+  };
+  tpl.requisitos.forEach(r=>{ inspState.results[r.codigo] = { resultado:null, obs:'', foto:null }; });
+  Track.event('inspection_started', { template: tpl.id, product: p.key });
+  inspView = 'check';
+  renderInspectionModule();
+}
+
+/* --- Vista 2: checklist de requisitos --- */
+function renderInspectionRequirements(){
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  const sc = calculateInspectionScore();
+  const estados = { verde:'🟢 Cumple', amarillo:'🟡 Cumple con observaciones', rojo:'🔴 No cumple', neutro:'⚪ En proceso' };
+  const cards = tpl.requisitos.map(r=>{
+    const res = inspState.results[r.codigo];
+    const sel = res.resultado;
+    const foto = res.foto;
+    return `
+    <div class="req-card ${sel?('r-'+sel):''}">
+      <div class="req-top"><span class="req-code">${r.codigo==='LEG'?'★':inspEsc(r.codigo)}</span><span class="req-desc">${inspEsc(r.descripcion)}</span></div>
+      <div class="res-btns">
+        <button class="res-btn ok ${sel==='cumple'?'sel':''}"   onclick="saveInspectionResult('${r.codigo}','cumple')">Cumple</button>
+        <button class="res-btn no ${sel==='nocumple'?'sel':''}" onclick="saveInspectionResult('${r.codigo}','nocumple')">No cumple</button>
+        <button class="res-btn na ${sel==='na'?'sel':''}"       onclick="saveInspectionResult('${r.codigo}','na')">N/A</button>
+      </div>
+      <textarea class="req-obs" placeholder="Observaciones (opcional)…" oninput="inspState.results['${r.codigo}'].obs=this.value">${inspEsc(res.obs)}</textarea>
+      <div class="req-photo">
+        <label class="req-photo-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          ${foto?'Cambiar foto':'Agregar foto'}
+          <input type="file" accept="image/*" capture="environment" style="display:none" onchange="attachInspectionPhoto('${r.codigo}', this)">
+        </label>
+        ${foto?`<span class="req-photo-tag">📎 ${inspEsc(foto.name)}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `
+    <div class="shead insp-check-head">
+      <button class="insp-back" onclick="inspView='pick';renderInspectionModule()">← Cambiar producto</button>
+      <h2>${inspEsc(inspState.producto.nombre)}</h2><p>${tpl.nombre}</p>
+    </div>
+
+    <div class="insp-score">
+      <div class="insp-pct ${sc.estado}">${sc.pct}%</div>
+      <div class="insp-bar"><i style="width:${sc.pct}%"></i></div>
+      <div class="insp-estado">${estados[sc.estado]}</div>
+      <div class="insp-counts"><span class="c-ok">✔ ${sc.cumple}</span><span class="c-no">✕ ${sc.nocumple}</span><span class="c-na">N/A ${sc.na}</span><span class="c-tot">${sc.evaluados}/${sc.total}</span></div>
+    </div>
+
+    <div class="insp-datos">
+      <div class="insp-field"><label>Cliente</label><input type="text" value="${inspEsc(inspState.cliente)}" placeholder="Nombre del cliente" oninput="inspState.cliente=this.value"></div>
+      <div class="insp-field"><label>Edificio / sitio</label><input type="text" value="${inspEsc(inspState.edificio)}" placeholder="Edificio o área" oninput="inspState.edificio=this.value"></div>
+    </div>
+
+    <div class="req-list">${cards}</div>
+
+    <div class="insp-actions">
+      <div class="insp-field"><label>Observaciones generales</label><textarea placeholder="Notas de toda la auditoría…" oninput="inspState.obsGenerales=this.value">${inspEsc(inspState.obsGenerales)}</textarea></div>
+      <button class="btn btn-ink" onclick="finishInspection()">Ver resumen →</button>
+    </div>`;
+}
+
+/* --- Guardar el resultado de un requisito --- */
+function saveInspectionResult(codigo, valor){
+  if(!inspState) return;
+  const cur = inspState.results[codigo];
+  cur.resultado = (cur.resultado===valor ? null : valor); // volver a tocar = desmarcar
+  Track.event('inspection_result_changed', { code:codigo, result:cur.resultado });
+  renderInspectionModule();
+}
+
+/* --- Adjuntar foto a un requisito (referencia; Storage a futuro) --- */
+function attachInspectionPhoto(codigo, input){
+  const file = input.files && input.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    inspState.results[codigo].foto = { name:file.name, dataUrl:e.target.result };
+    Track.event('inspection_photo_added', { code:codigo, name:file.name });
+    renderInspectionModule();
+  };
+  reader.readAsDataURL(file);
+}
+
+/* --- Cálculo automático de la puntuación --- */
+function calculateInspectionScore(){
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  let cumple=0, nocumple=0, na=0, conObs=0;
+  tpl.requisitos.forEach(r=>{
+    const res = inspState.results[r.codigo];
+    if(res.resultado==='cumple') cumple++;
+    else if(res.resultado==='nocumple') nocumple++;
+    else if(res.resultado==='na') na++;
+    if(res.obs && res.obs.trim()) conObs++;
+  });
+  const total = tpl.requisitos.length;
+  const evaluados = cumple+nocumple+na;
+  const evaluables = cumple+nocumple; // N/A no cuenta para el %
+  const pct = evaluables ? Math.round(cumple/evaluables*100) : 0;
+  let estado='neutro';
+  if(evaluados>0){
+    if(nocumple>0) estado='rojo';
+    else if(conObs>0) estado='amarillo';
+    else estado='verde';
+  }
+  return { total, cumple, nocumple, na, evaluados, evaluables, pct, estado, conObs };
+}
+
+/* --- Finalizar: pasa al resumen --- */
+function finishInspection(){
+  const sc = calculateInspectionScore();
+  if(sc.evaluados===0){ toast && toast('Marcá al menos un requisito antes de finalizar.'); return; }
+  Track.event('inspection_finished', { product:inspState.producto.key, pct:sc.pct, estado:sc.estado });
+  inspView='summary';
+  renderInspectionModule();
+}
+
+/* --- Vista 3: resumen --- */
+function renderInspectionSummary(){
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  const sc = calculateInspectionScore();
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-CR');
+  const hora  = now.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
+  inspState._fecha = fecha; inspState._hora = hora;
+  const estados = { verde:'🟢 Cumple', amarillo:'🟡 Cumple con observaciones', rojo:'🔴 No cumple', neutro:'⚪ Sin datos' };
+  const incumplen = tpl.requisitos.filter(r=>inspState.results[r.codigo].resultado==='nocumple');
+  const rows = [
+    ['Inspector', inspState.inspector||'—'],
+    ['Fecha', fecha], ['Hora', hora],
+    ['Producto', inspState.producto.nombre],
+    ['Cliente', inspState.cliente||'—'],
+    ['Edificio / sitio', inspState.edificio||'—'],
+    ['Proyecto', inspState.proyecto||'—'],
+    ['Incumplimientos', String(sc.nocumple)],
+    ['Porcentaje', sc.pct+'%']
+  ].map(r=>`<div class="sum-row"><span>${r[0]}</span><b>${inspEsc(r[1])}</b></div>`).join('');
+
+  const listaIncumple = incumplen.length
+    ? `<div class="sum-incumple"><div class="h">Requisitos que no cumplen</div>${incumplen.map(r=>`<div class="sum-inc">✕ ${inspEsc(r.codigo)} ${inspEsc(r.descripcion)}${inspState.results[r.codigo].obs?` — <i>${inspEsc(inspState.results[r.codigo].obs)}</i>`:''}</div>`).join('')}</div>`
+    : `<div class="sum-ok">Sin incumplimientos registrados.</div>`;
+
+  return `
+    <div class="shead insp-check-head">
+      <button class="insp-back" onclick="inspView='check';renderInspectionModule()">← Editar auditoría</button>
+      <h2>Resumen de la auditoría</h2><p>${tpl.nombre}</p>
+    </div>
+
+    <div class="insp-score">
+      <div class="insp-pct ${sc.estado}">${sc.pct}%</div>
+      <div class="insp-bar"><i style="width:${sc.pct}%"></i></div>
+      <div class="insp-estado">${estados[sc.estado]}</div>
+    </div>
+
+    <div class="sum-card">${rows}</div>
+    ${inspState.obsGenerales?`<div class="sum-obsgen"><div class="h">Observaciones generales</div><p>${inspEsc(inspState.obsGenerales)}</p></div>`:''}
+    ${listaIncumple}
+
+    <div class="insp-actions">
+      <button class="btn btn-ink" onclick="exportInspection()">Exportar resumen</button>
+      <button class="btn btn-sage" onclick="saveInspection()">Guardar en el sistema</button>
+      <button class="btn btn-out" onclick="openInspection()">Nueva auditoría</button>
+    </div>`;
+}
+
+/* --- Texto profesional del resumen --- */
+function buildInspectionText(){
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  const sc = calculateInspectionScore();
+  const est = {verde:'CUMPLE',amarillo:'CUMPLE CON OBSERVACIONES',rojo:'NO CUMPLE',neutro:'SIN DATOS'}[sc.estado];
+  let t = '';
+  t += 'AUDITORÍA DE ETIQUETA — LillyTech\n';
+  t += '===================================\n';
+  t += 'Inspector: '+(inspState.inspector||'—')+'\n';
+  t += 'Fecha: '+(inspState._fecha||'')+'   Hora: '+(inspState._hora||'')+'\n';
+  t += 'Producto: '+inspState.producto.nombre+'\n';
+  t += 'Cliente: '+(inspState.cliente||'—')+'\n';
+  t += 'Edificio/sitio: '+(inspState.edificio||'—')+'\n';
+  t += 'Proyecto: '+(inspState.proyecto||'—')+'\n';
+  t += '-----------------------------------\n';
+  t += 'Resultado: '+est+'   ('+sc.pct+'%)\n';
+  t += 'Cumple: '+sc.cumple+'   No cumple: '+sc.nocumple+'   N/A: '+sc.na+'   Total: '+sc.total+'\n';
+  t += '-----------------------------------\n';
+  t += 'DETALLE POR REQUISITO:\n';
+  tpl.requisitos.forEach(r=>{
+    const res = inspState.results[r.codigo];
+    const m = res.resultado==='cumple'?'[CUMPLE]':res.resultado==='nocumple'?'[NO CUMPLE]':res.resultado==='na'?'[N/A]':'[—]';
+    t += m+' '+r.codigo+' '+r.descripcion;
+    if(res.obs && res.obs.trim()) t += ' | Obs: '+res.obs.trim();
+    if(res.foto) t += ' | Foto: '+res.foto.name;
+    t += '\n';
+  });
+  if(inspState.obsGenerales && inspState.obsGenerales.trim()){
+    t += '-----------------------------------\n';
+    t += 'OBSERVACIONES GENERALES:\n'+inspState.obsGenerales.trim()+'\n';
+  }
+  t += '===================================\n';
+  return t;
+}
+
+/* --- Exportar (texto ahora; PDF preparado para futuro) --- */
+function exportInspection(){
+  const txt = buildInspectionText();
+  Track.event('inspection_exported', { product:inspState.producto.key, format:'text' });
+  // Descargar como .txt
+  try{
+    const blob = new Blob([txt], {type:'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safe = inspState.producto.nombre.replace(/[^a-z0-9]+/gi,'_');
+    a.href=url; a.download='Auditoria_etiqueta_'+safe+'.txt';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1500);
+  }catch(_){}
+  // Copiar al portapapeles como respaldo
+  try{ navigator.clipboard && navigator.clipboard.writeText(txt); }catch(_){}
+  toast && toast('Resumen exportado (texto descargado y copiado).');
+}
+
+/* --- Guardar en Supabase (inspections + inspection_results) --- */
+async function saveInspection(){
+  if(!inspState) return;
+  const sc = calculateInspectionScore();
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  const now = new Date();
+  const head = {
+    id: inspState.id,
+    template_id: inspState.templateId,
+    producto: inspState.producto.nombre,
+    cliente: inspState.cliente || null,
+    edificio: inspState.edificio || null,
+    proyecto: inspState.proyecto || null,
+    usuario: inspState.inspector || null,
+    fecha: now.toISOString().slice(0,10),
+    hora: now.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'}),
+    cumplimiento: sc.estado,
+    porcentaje: sc.pct,
+    observaciones_generales: inspState.obsGenerales || null,
+    device_id: deviceId()
+  };
+  const results = tpl.requisitos.map(r=>({
+    inspection_id: inspState.id,
+    requirement_codigo: r.codigo,
+    requirement_descripcion: r.descripcion,
+    resultado: inspState.results[r.codigo].resultado,
+    observaciones: inspState.results[r.codigo].obs || null,
+    foto: inspState.results[r.codigo].foto ? inspState.results[r.codigo].foto.name : null
+  }));
+  // respaldo local siempre
+  try{ const q=JSON.parse(localStorage.getItem('gls_inspections')||'[]'); q.push({head,results,ts:now.toISOString()}); localStorage.setItem('gls_inspections',JSON.stringify(q.slice(-50))); }catch(_){}
+  Track.event('inspection_saved', { product:inspState.producto.key, pct:sc.pct });
+  const H = { 'apikey':CORE.anon, 'Authorization':'Bearer '+CORE.anon, 'Content-Type':'application/json', 'Prefer':'return=minimal' };
+  try{
+    await fetch(CORE.url+'/rest/v1/inspections', { method:'POST', headers:H, body:JSON.stringify(head) });
+    await fetch(CORE.url+'/rest/v1/inspection_results', { method:'POST', headers:H, body:JSON.stringify(results) });
+    toast && toast('Auditoría guardada en el sistema.');
+  }catch(_){
+    toast && toast('Guardada localmente. Se enviará cuando haya conexión.');
+  }
+}
+
+/* --- Cargar una auditoría (preparado para historial futuro) --- */
+function loadInspection(record){
+  if(!record) return;
+  inspState = record; inspView='summary'; renderInspectionModule();
+}
+
+
+renderTasks(); renderProducts(); renderGHS(); renderNFPA(); renderColors(); renderEmg(); renderCompat(); renderInspectionModule();
 
 function enterApp(){
   const nombre=(document.getElementById('gNombre').value||'').trim();
