@@ -1364,7 +1364,7 @@ function renderInspectionRequirements(){
 
     <div class="insp-datos">
       <div class="insp-field"><label>Cliente</label><input type="text" value="${inspEsc(inspState.cliente)}" placeholder="Nombre del cliente" oninput="inspState.cliente=this.value"></div>
-      <div class="insp-field"><label>Edificio / sitio</label><input type="text" value="${inspEsc(inspState.edificio)}" placeholder="Edificio o área" oninput="inspState.edificio=this.value"></div>
+      <div class="insp-field"><label>Edificio / sitio <span style="color:var(--rust,#C2503A)">*</span></label><input id="inspSitio" type="text" value="${inspEsc(inspState.edificio)}" placeholder="Obligatorio: edificio o área" oninput="inspState.edificio=this.value"></div>
     </div>
 
     <div class="req-list">${cards}</div>
@@ -1423,6 +1423,11 @@ function calculateInspectionScore(){
 /* --- Finalizar: pasa al resumen --- */
 function finishInspection(){
   const sc = calculateInspectionScore();
+  if(!inspState.edificio || !inspState.edificio.trim()){
+    toast && toast('Escribí el Edificio / sitio antes de finalizar.');
+    const el=document.getElementById('inspSitio'); if(el){ el.focus(); el.scrollIntoView({behavior:'smooth',block:'center'}); }
+    return;
+  }
   if(sc.evaluados===0){ toast && toast('Marcá al menos un requisito antes de finalizar.'); return; }
   Track.event('inspection_finished', { product:inspState.producto.key, pct:sc.pct, estado:sc.estado });
   inspView='summary';
