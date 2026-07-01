@@ -491,7 +491,7 @@ img{display:block;max-width:100%}
 
       <button class="mod" onclick="openInspection()">
         <div class="m-ic tint-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.59 13.41 13.42 20.6a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
-        <h3>Auditoría de etiqueta</h3><p>Inspección paso a paso.</p>
+        <h3>Auditorías</h3><p>Etiquetas, SDS y más.</p>
       </button>
 
       <button class="mod" onclick="go('ghs')">
@@ -795,7 +795,7 @@ function show(id){
   document.getElementById('topName').textContent = sub ? titleFor(id) : CONFIG.marca.nombre;
   document.getElementById('topSub').textContent = sub ? 'Guía de Limpieza Segura' : CONFIG.marca.sub;
 }
-function titleFor(id){return {asistente:'No sé cuál usar',productos:'Productos',ficha:'Ficha de producto',etiqueta:'Auditoría de etiqueta',ghs:'Pictogramas GHS',nfpa:'Rombo NFPA',colores:'Código de colores',emergencias:'Emergencias',compat:'¿Se pueden juntar?'}[id]||'';}
+function titleFor(id){return {asistente:'No sé cuál usar',productos:'Productos',ficha:'Ficha de producto',etiqueta:'Auditorías',ghs:'Pictogramas GHS',nfpa:'Rombo NFPA',colores:'Código de colores',emergencias:'Emergencias',compat:'¿Se pueden juntar?'}[id]||'';}
 function go(id){ navStack.push(id); show(id); Track.event('open_module',{module:id}); }
 function back(){ navStack.pop(); const prev = navStack[navStack.length-1]||'home'; show(prev); }
 document.getElementById('backBtn').onclick = back;
