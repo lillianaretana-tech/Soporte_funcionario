@@ -387,6 +387,8 @@ img{display:block;max-width:100%}
 .nfpa-note.green svg{color:var(--sage)}
 
 /* ===== Motor de auditorías ===== */
+
+.insp-type-ic{width:46px;height:46px;border-radius:12px;background:var(--paper-3,#EFEADF);display:grid;place-items:center;font-size:1.5rem;flex:none}
 .insp-intro{display:flex;gap:11px;align-items:flex-start;background:var(--sage-soft,#DBEDE3);border:1px solid #BFE0CD;border-radius:14px;padding:14px 16px;margin:0 0 16px;font-size:.94rem;color:#2f6b50}
 .insp-intro svg{width:22px;height:22px;color:var(--sage,#4F9E7A);flex:none;margin-top:2px}
 .insp-check-head{display:flex;flex-direction:column;gap:2px}
@@ -1221,6 +1223,23 @@ const INSPECTION_TEMPLATES = {
       { codigo:'6.16', descripcion:'Número de lote' },
       { codigo:'LEG',  descripcion:'Etiqueta legible y en español' }
     ]
+  },
+  sds: {
+    id: 'sds',
+    nombre: 'Auditoría de SDS física',
+    descripcion: 'Revisión de la hoja de seguridad (SDS) impresa: que esté, legible, vigente y accesible.',
+    requisitos: [
+      { codigo:'S1',  descripcion:'La SDS del producto está presente' },
+      { codigo:'S2',  descripcion:'Corresponde al producto (nombre y fabricante coinciden)' },
+      { codigo:'S3',  descripcion:'Está en español' },
+      { codigo:'S4',  descripcion:'Legible (sin borrones, roturas ni partes ilegibles)' },
+      { codigo:'S5',  descripcion:'Tiene fecha de emisión o revisión visible' },
+      { codigo:'S6',  descripcion:'Vigente por fecha (revisión no mayor a 5 años)' },
+      { codigo:'S7',  descripcion:'Completa (todas sus páginas y secciones)' },
+      { codigo:'S8',  descripcion:'Accesible: el personal sabe dónde está y la alcanza' },
+      { codigo:'S9',  descripcion:'Ubicada cerca del área de uso del producto' },
+      { codigo:'S10', descripcion:'Protegida (mica o folder, sin deterioro)' }
+    ]
   }
 };
 
@@ -1231,19 +1250,36 @@ function inspUUID(){ try{ return crypto.randomUUID(); }catch(_){ return 'insp_'+
 function inspEsc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
 
 /* --- Entrada al módulo (desde el home) --- */
-function openInspection(){ inspView='pick'; inspState=null; go('etiqueta'); renderInspectionModule(); }
+function openInspection(){ inspView='type'; inspState=null; go('etiqueta'); renderInspectionModule(); }
 
 /* --- Router del módulo: decide qué vista mostrar --- */
 function renderInspectionModule(){
   const root = document.getElementById('inspRoot'); if(!root) return;
-  if(inspView==='check' && inspState)      root.innerHTML = renderInspectionRequirements();
+  if(inspView==='check' && inspState)        root.innerHTML = renderInspectionRequirements();
   else if(inspView==='summary' && inspState) root.innerHTML = renderInspectionSummary();
-  else root.innerHTML = renderInspectionPicker();
+  else if(inspView==='pick')                 root.innerHTML = renderInspectionPicker();
+  else                                       root.innerHTML = renderInspectionTypePicker();
 }
+
+/* --- Vista 0: elegir TIPO de auditoría (etiqueta, SDS, ...) --- */
+let inspTemplateId = 'etiqueta';
+function renderInspectionTypePicker(){
+  const iconos = { etiqueta:'🏷️', sds:'📄' };
+  const cards = Object.values(INSPECTION_TEMPLATES).map(t=>`
+    <button class="pcard" onclick="chooseInspectionType('${t.id}')">
+      <div class="insp-type-ic">${iconos[t.id]||'📋'}</div>
+      <div class="pcard-info"><b>${inspEsc(t.nombre)}</b><small>${inspEsc(t.descripcion)}</small></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`).join('');
+  return `
+    <div class="shead"><h2>Motor de auditorías</h2><p>Elegí qué querés auditar.</p></div>
+    <div class="plist">${cards}</div>`;
+}
+function chooseInspectionType(id){ inspTemplateId=id; inspView='pick'; renderInspectionModule(); }
 
 /* --- Vista 1: elegir producto a auditar --- */
 function renderInspectionPicker(){
-  const tpl = INSPECTION_TEMPLATES.etiqueta;
+  const tpl = INSPECTION_TEMPLATES[inspTemplateId];
   const cards = CONFIG.productos.map(p=>`
     <button class="pcard" onclick="startInspection('${p.key}')">
       <img src="${p.img}" alt="" onerror="this.style.display='none'">
@@ -1251,10 +1287,13 @@ function renderInspectionPicker(){
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </button>`).join('');
   return `
-    <div class="shead"><h2>${tpl.nombre}</h2><p>Elegí el producto que vas a inspeccionar.</p></div>
+    <div class="shead insp-check-head">
+      <button class="insp-back" onclick="inspView='type';renderInspectionModule()">← Cambiar tipo de auditoría</button>
+      <h2>${tpl.nombre}</h2><p>Elegí el producto que vas a inspeccionar.</p>
+    </div>
     <div class="insp-intro">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      <span>Revisá cada requisito de la etiqueta, marcá si cumple, agregá observaciones y foto, y al final obtenés el resultado con su porcentaje.</span>
+      <span>Revisá cada requisito, marcá si cumple, agregá observaciones y foto, y al final obtenés el resultado con su porcentaje.</span>
     </div>
     <div class="plist">${cards}</div>`;
 }
@@ -1262,7 +1301,7 @@ function renderInspectionPicker(){
 /* --- Arrancar una inspección para un producto --- */
 function startInspection(key){
   const p = CONFIG.productos.find(x=>x.key===key); if(!p) return;
-  const tpl = INSPECTION_TEMPLATES.etiqueta;
+  const tpl = INSPECTION_TEMPLATES[inspTemplateId];
   const u = glsUser() || {};
   inspState = {
     id: inspUUID(),
@@ -1432,8 +1471,9 @@ function renderInspectionSummary(){
     ${listaIncumple}
 
     <div class="insp-actions">
-      <button class="btn btn-ink" onclick="exportInspection()">Exportar resumen</button>
+      <button class="btn btn-ink" onclick="exportInspectionPDF()">Exportar PDF</button>
       <button class="btn btn-sage" onclick="saveInspection()">Guardar en el sistema</button>
+      <button class="btn btn-out" onclick="exportInspection()">Descargar texto</button>
       <button class="btn btn-out" onclick="openInspection()">Nueva auditoría</button>
     </div>`;
 }
@@ -1473,7 +1513,83 @@ function buildInspectionText(){
   return t;
 }
 
-/* --- Exportar (texto ahora; PDF preparado para futuro) --- */
+/* --- Exportar como PDF profesional (usa la impresión del navegador: "Guardar como PDF") --- */
+function exportInspectionPDF(){
+  const tpl = INSPECTION_TEMPLATES[inspState.templateId];
+  const sc = calculateInspectionScore();
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-CR');
+  const hora  = now.toLocaleTimeString('es-CR',{hour:'2-digit',minute:'2-digit'});
+  const estColor = {verde:'#2f9b73',amarillo:'#C79A2E',rojo:'#C2503A',neutro:'#8A91A2'}[sc.estado];
+  const estTxt   = {verde:'CUMPLE',amarillo:'CUMPLE CON OBSERVACIONES',rojo:'NO CUMPLE',neutro:'SIN DATOS'}[sc.estado];
+  const badge = r=>{
+    const v=inspState.results[r.codigo].resultado;
+    if(v==='cumple')  return '<span style="color:#2f9b73;font-weight:700">✔ Cumple</span>';
+    if(v==='nocumple')return '<span style="color:#C2503A;font-weight:700">✕ No cumple</span>';
+    if(v==='na')      return '<span style="color:#6B7280;font-weight:700">N/A</span>';
+    return '<span style="color:#9098A8">—</span>';
+  };
+  const filas = tpl.requisitos.map(r=>{
+    const res=inspState.results[r.codigo];
+    return `<tr>
+      <td class="c">${inspEsc(r.codigo)}</td>
+      <td>${inspEsc(r.descripcion)}</td>
+      <td class="c">${badge(r)}</td>
+      <td>${res.obs?inspEsc(res.obs):''}${res.foto?`<br><i style="color:#8A91A2">📎 ${inspEsc(res.foto.name)}</i>`:''}</td>
+    </tr>`;
+  }).join('');
+  const meta = [
+    ['Inspector', inspState.inspector||'—'],['Fecha', fecha],['Hora', hora],
+    ['Producto', inspState.producto.nombre],['Cliente', inspState.cliente||'—'],
+    ['Edificio / sitio', inspState.edificio||'—'],['Proyecto', inspState.proyecto||'—']
+  ].map(m=>`<div class="mrow"><span>${m[0]}</span><b>${inspEsc(m[1])}</b></div>`).join('');
+
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+  <title>Auditoría — ${inspEsc(inspState.producto.nombre)}</title>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#191F2E;margin:0;padding:32px;font-size:13px;line-height:1.5}
+    .hd{display:flex;align-items:center;gap:14px;border-bottom:3px solid #C39A45;padding-bottom:16px;margin-bottom:20px}
+    .seal{width:52px;height:52px;border-radius:13px;background:linear-gradient(150deg,#C39A45,#A07E2E);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1.3rem;font-family:Georgia,serif}
+    .hd h1{margin:0;font-size:1.5rem;font-family:Georgia,serif;color:#0E1220}
+    .hd p{margin:2px 0 0;color:#5A6275}
+    .grid{display:flex;gap:20px;margin-bottom:22px;flex-wrap:wrap}
+    .meta{flex:1;min-width:260px}
+    .mrow{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid #Eee}
+    .mrow span{color:#5A6275}.mrow b{color:#0E1220}
+    .scorebox{border:2px solid ${estColor};border-radius:14px;padding:18px 24px;text-align:center;min-width:180px}
+    .scorebox .p{font-size:2.6rem;font-weight:800;color:${estColor};font-family:Georgia,serif;line-height:1}
+    .scorebox .e{font-weight:700;color:${estColor};margin-top:6px}
+    .scorebox .c{color:#5A6275;margin-top:8px;font-size:.82rem}
+    table{width:100%;border-collapse:collapse;margin-top:6px}
+    th{background:#0E1220;color:#fff;text-align:left;padding:9px 10px;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em}
+    td{padding:9px 10px;border-bottom:1px solid #E8E2D5;vertical-align:top}
+    td.c{text-align:center;white-space:nowrap}
+    .obsgen{margin-top:18px;background:#F7F4ED;border:1px solid #E2DCCD;border-radius:10px;padding:14px}
+    .ft{margin-top:26px;text-align:center;color:#8A91A2;font-size:.78rem;border-top:1px solid #E2DCCD;padding-top:14px}
+    @media print{body{padding:0}}
+  </style></head><body>
+    <div class="hd"><div class="seal">LT</div><div><h1>${inspEsc(tpl.nombre)}</h1><p>Informe de auditoría · LillyTech</p></div></div>
+    <div class="grid">
+      <div class="meta">${meta}</div>
+      <div class="scorebox"><div class="p">${sc.pct}%</div><div class="e">${estTxt}</div><div class="c">✔ ${sc.cumple} &nbsp; ✕ ${sc.nocumple} &nbsp; N/A ${sc.na}</div></div>
+    </div>
+    <table><thead><tr><th style="width:56px">Cód.</th><th>Requisito</th><th style="width:110px">Resultado</th><th style="width:34%">Observaciones</th></tr></thead><tbody>${filas}</tbody></table>
+    ${inspState.obsGenerales&&inspState.obsGenerales.trim()?`<div class="obsgen"><b>Observaciones generales</b><br>${inspEsc(inspState.obsGenerales)}</div>`:''}
+    <div class="ft">Generado el ${fecha} a las ${hora} · LillyTech — Motor de auditorías</div>
+  </body></html>`;
+
+  Track.event('inspection_exported', { product:inspState.producto.key, format:'pdf' });
+  // iframe oculto para imprimir (funciona en teléfono y PC; el usuario elige "Guardar como PDF")
+  const ifr = document.createElement('iframe');
+  ifr.style.position='fixed'; ifr.style.right='0'; ifr.style.bottom='0'; ifr.style.width='0'; ifr.style.height='0'; ifr.style.border='0';
+  document.body.appendChild(ifr);
+  ifr.onload = ()=>{ try{ ifr.contentWindow.focus(); ifr.contentWindow.print(); }catch(_){ } setTimeout(()=>ifr.remove(), 60000); };
+  ifr.srcdoc = doc;
+  toast && toast('Se abrió la impresión. Elegí "Guardar como PDF".');
+}
+
+/* --- Exportar como texto (.txt) --- */
 function exportInspection(){
   const txt = buildInspectionText();
   Track.event('inspection_exported', { product:inspState.producto.key, format:'text' });
@@ -1483,7 +1599,7 @@ function exportInspection(){
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     const safe = inspState.producto.nombre.replace(/[^a-z0-9]+/gi,'_');
-    a.href=url; a.download='Auditoria_etiqueta_'+safe+'.txt';
+    a.href=url; a.download='Auditoria_'+inspState.templateId+'_'+safe+'.txt';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1500);
   }catch(_){}
